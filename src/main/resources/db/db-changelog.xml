@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+        <changeSet id="create_table_users" author="vdidenko">
+            <createTable tableName="users">
+                <column name="user_id" type="bigint(11)" autoIncrement="true">
+                    <constraints primaryKey="true"/>
+                </column>
+                <column name="login" type="varchar(60)">
+                    <constraints nullable="false" unique="true"/>
+                </column>
+                <column name="password" type="varchar(255)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="ukr_surname" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="ukr_name" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="eng_surname" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="eng_name" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="role" type="ENUM('ADMIN','USER')">
+                    <constraints nullable="false"/>
+                </column>
+            </createTable>
+        </changeSet>
+        <changeSet id="create_table_students" author="vdidenko">
+            <createTable tableName="students">
+                <column name="student_id" type="bigint" autoIncrement="true">
+                    <constraints primaryKey="true"/>
+                </column>
+                <column name="usede_id" type="bigint">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="ukr_surname" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="ukr_name" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="ukr_father_name" type="varchar(60)"/>
+                <column name="ukr_country" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="eng_surname" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="eng_name" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="eng_father_name" type="varchar(60)"/>
+                <column name="eng_country" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="degree" type="ENUM('Bachelor','Specialist','Master')">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="date_of_birth" type="date">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="get_into_year" type="int">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="graduate_year" type="int">
+                    <constraints nullable="false"/>
+                </column>
+            </createTable>
+        </changeSet>
+        <changeSet id="create_table_specialties" author="vdidenko">
+            <createTable tableName="specialties">
+                <column name="specialty_id" type="bigint" autoIncrement="true">
+                    <constraints primaryKey="true"/>
+                </column>
+                <column name="ukr_name" type="varchar(150)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="eng_name" type="varchar(150)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="ukr_specialization" type="varchar(150)">
+                    <constraints nullable="false" />
+                </column>
+                <column name="eng_specialization" type="varchar(150)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="year" type="int">
+                    <constraints nullable="false"/>
+                </column>
+            </createTable>
+        </changeSet>
+        <changeSet id="addUniqueConstraint_for_specialties_table" author="vdidenko">
+            <addUniqueConstraint constraintName="unique_specialty"
+                                 tableName="specialties" columnNames="ukr_name, ukr_specialization, year"/>
+        </changeSet>
+        <changeSet id="create_table_subjects" author="vdidenko">
+            <createTable tableName="subjects">
+                <column name="subject_id" type="bigint" autoIncrement="true">
+                    <constraints primaryKey="true"/>
+                </column>
+                <column name="semester" type="int">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="ukr_name" type="varchar(150)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="eng_name" type="varchar(150)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="code" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="credit" type="float(3,1)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="specialty_id" type="bigint">
+                    <constraints nullable="false" foreignKeyName="fk_specializations_specialties"
+                                 referencedTableName="specialties" referencedColumnNames="specialty_id"/>
+                </column>
+            </createTable>
+        </changeSet>
+        <changeSet id="addUniqueConstraint_for_subjects_table" author="vdidenko">
+            <addUniqueConstraint constraintName="unique_subject"
+                                 tableName="subjects" columnNames="semester, ukr_name, specialty_id"/>
+        </changeSet>
+        <changeSet id="create_table_exclusions" author="vdidenko">
+            <createTable tableName="exclusions">
+                <column name="exclusion_id" type="bigint" autoIncrement="true">
+                    <constraints primaryKey="true"/>
+                </column>
+                <column name="ukr_reason" type="varchar(1000)">
+                    <constraints nullable="false" unique="true"/>
+                </column>
+                <column name="eng_reason" type="varchar(1000)">
+                    <constraints nullable="false" unique="true"/>
+                </column>
+            </createTable>
+        </changeSet>
+        <changeSet id="create_table_grades" author="vdidenko">
+            <createTable tableName="grades">
+                <column name="student_id" type="bigint">
+                    <constraints primaryKey="true" nullable="false" foreignKeyName="fk_grades_students"
+                                 referencedTableName="students" referencedColumnNames="student_id"/>
+                </column>
+                <column name="subject_id" type="bigint">
+                    <constraints primaryKey="true" nullable="false" foreignKeyName="fk_grades_subjects"
+                                 referencedTableName="subjects" referencedColumnNames="subject_id"/>
+                </column>
+                <column name="onpu_grade" type="int">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="euro_grade" type="varchar(3)">
+                    <constraints nullable="false"/>
+                </column>
+            </createTable>
+        </changeSet>
+        <changeSet id="create_table_positions" author="vdidenko">
+            <createTable tableName="positions">
+                <column name="position_id" type="bigint" autoIncrement="true">
+                    <constraints primaryKey="true"/>
+                </column>
+                <column name="position_type" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="position_name" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+            </createTable>
+        </changeSet>
+        <changeSet id="addUniqueConstraint_for_positions_table" author="vdidenko">
+            <addUniqueConstraint constraintName="unique_position"
+                                 tableName="positions" columnNames="position_type, position_name"/>
+        </changeSet>
+        <changeSet id="create_table_signs" author="vdidenko">
+            <createTable tableName="signs">
+                <column name="sign_id" type="bigint" autoIncrement="true">
+                    <constraints primaryKey="true"/>
+                </column>
+                <column name="ukr_surname" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="ukr_name" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="ukr_father_name" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="eng_surname" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="eng_name" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="eng_father_name" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="position_id" type="bigint">
+                    <constraints nullable="false" foreignKeyName="fk_signs_positions"
+                                 referencedTableName="positions" referencedColumnNames="position_id"/>
+                </column>
+            </createTable>
+        </changeSet>
+        <changeSet id="create_table_references" author="vdidenko">
+            <createTable tableName="references">
+                <column name="reference_id" type="bigint" autoIncrement="true">
+                    <constraints primaryKey="true"/>
+                </column>
+                <column name="number" type="bigint">
+                    <constraints nullable="false" unique="true"/>
+                </column>
+                <column name="sign_date" type="date">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="order" type="varchar(60)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="order_date" type="date">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="student_id" type="bigint">
+                    <constraints nullable="false" foreignKeyName="fk_references_students"
+                                 referencedTableName="students" referencedColumnNames="student_id"/>
+                </column>
+                <column name="specialty_id" type="bigint">
+                    <constraints nullable="false" foreignKeyName="fk_references_specialties"
+                                 referencedTableName="specialties" referencedColumnNames="specialty_id"/>
+                </column>
+                <column name="exclusion_id" type="bigint">
+                    <constraints nullable="false" foreignKeyName="fk_references_exclusions"
+                                 referencedTableName="exclusions" referencedColumnNames="exclusion_id"/>
+                </column>
+                <column name="user_id" type="bigint">
+                    <constraints nullable="false" foreignKeyName="fk_references_users"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+                </column>
+            </createTable>
+        </changeSet>
+        <changeSet id="create_table_for_many2many_signs_references" author="vdidenko">
+            <createTable tableName="signs_references">
+                <column name="sign_id" type="bigint">
+                    <constraints primaryKey="true" foreignKeyName="fk_signs_references_signs"
+                                 referencedTableName="signs" referencedColumnNames="sign_id"/>
+                </column>
+                <column name="reference_id" type="bigint">
+                    <constraints primaryKey="true" foreignKeyName="fk_signs_references_references"
+                                 referencedTableName="references" referencedColumnNames="reference_id"/>
+                </column>
+            </createTable>
+        </changeSet>
+        <changeSet id="insert_test_data" author="vdidenko">
+            <sqlFile path="classpath:db/insert-test-data.sql"/>
+            <rollback><sql>rollback;</sql></rollback>
+        </changeSet>
+
+</databaseChangeLog>
