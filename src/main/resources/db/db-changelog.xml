@@ -39,7 +39,7 @@
                     <constraints primaryKey="true"/>
                 </column>
                 <column name="usede_id" type="bigint">
-                    <constraints nullable="false"/>
+                    <constraints nullable="false" unique="true"/>
                 </column>
                 <column name="ukr_surname" type="varchar(60)">
                     <constraints nullable="false"/>
@@ -97,7 +97,7 @@
                 </column>
             </createTable>
         </changeSet>
-        <changeSet id="addUniqueConstraint_for_specialties_table" author="vdidenko">
+        <changeSet id="add_unique_constraint_specialties_table" author="vdidenko">
             <addUniqueConstraint constraintName="unique_specialty"
                                  tableName="specialties" columnNames="ukr_name, ukr_specialization, year"/>
         </changeSet>
@@ -122,14 +122,19 @@
                     <constraints nullable="false"/>
                 </column>
                 <column name="specialty_id" type="bigint">
-                    <constraints nullable="false" foreignKeyName="fk_specializations_specialties"
-                                 referencedTableName="specialties" referencedColumnNames="specialty_id"/>
+                    <constraints nullable="false"/>
                 </column>
             </createTable>
         </changeSet>
-        <changeSet id="addUniqueConstraint_for_subjects_table" author="vdidenko">
+        <changeSet id="add_unique_constraint_subjects_table" author="vdidenko">
             <addUniqueConstraint constraintName="unique_subject"
                                  tableName="subjects" columnNames="semester, ukr_name, specialty_id"/>
+        </changeSet>
+        <changeSet id="add_fk_subjects_table" author="vdidenko">
+            <addForeignKeyConstraint constraintName="fk_subjects_specialties"
+                                     baseTableName="subjects" baseColumnNames="specialty_id"
+                                     referencedTableName="specialties" referencedColumnNames="specialty_id"
+                                     onDelete="RESTRICT" onUpdate="CASCADE"/>
         </changeSet>
         <changeSet id="create_table_exclusions" author="vdidenko">
             <createTable tableName="exclusions">
@@ -147,12 +152,10 @@
         <changeSet id="create_table_grades" author="vdidenko">
             <createTable tableName="grades">
                 <column name="student_id" type="bigint">
-                    <constraints primaryKey="true" nullable="false" foreignKeyName="fk_grades_students"
-                                 referencedTableName="students" referencedColumnNames="student_id"/>
+                    <constraints primaryKey="true" nullable="false"/>
                 </column>
                 <column name="subject_id" type="bigint">
-                    <constraints primaryKey="true" nullable="false" foreignKeyName="fk_grades_subjects"
-                                 referencedTableName="subjects" referencedColumnNames="subject_id"/>
+                    <constraints primaryKey="true" nullable="false"/>
                 </column>
                 <column name="onpu_grade" type="int">
                     <constraints nullable="false"/>
@@ -161,6 +164,16 @@
                     <constraints nullable="false"/>
                 </column>
             </createTable>
+        </changeSet>
+        <changeSet id="add_fk_grades_table" author="vdidenko">
+            <addForeignKeyConstraint constraintName="fk_grades_students"
+                                     baseTableName="grades" baseColumnNames="student_id"
+                                     referencedTableName="students" referencedColumnNames="student_id"
+                                     onDelete="CASCADE" onUpdate="CASCADE"/>
+            <addForeignKeyConstraint constraintName="fk_grades_subjects"
+                                     baseTableName="grades" baseColumnNames="subject_id"
+                                     referencedTableName="subjects" referencedColumnNames="subject_id"
+                                     onDelete="CASCADE" onUpdate="CASCADE"/>
         </changeSet>
         <changeSet id="create_table_positions" author="vdidenko">
             <createTable tableName="positions">
@@ -175,7 +188,7 @@
                 </column>
             </createTable>
         </changeSet>
-        <changeSet id="addUniqueConstraint_for_positions_table" author="vdidenko">
+        <changeSet id="add_unique_constraint_positions_table" author="vdidenko">
             <addUniqueConstraint constraintName="unique_position"
                                  tableName="positions" columnNames="position_type, position_name"/>
         </changeSet>
@@ -203,10 +216,15 @@
                     <constraints nullable="false"/>
                 </column>
                 <column name="position_id" type="bigint">
-                    <constraints nullable="false" foreignKeyName="fk_signs_positions"
-                                 referencedTableName="positions" referencedColumnNames="position_id"/>
+                    <constraints nullable="false"/>
                 </column>
             </createTable>
+        </changeSet>
+        <changeSet id="add_fk_signs_table" author="vdidenko">
+            <addForeignKeyConstraint constraintName="fk_signs_positions"
+                                     baseTableName="signs" baseColumnNames="position_id"
+                                     referencedTableName="positions" referencedColumnNames="position_id"
+                                     onDelete="RESTRICT" onUpdate="CASCADE"/>
         </changeSet>
         <changeSet id="create_table_references" author="vdidenko">
             <createTable tableName="references">
@@ -226,34 +244,56 @@
                     <constraints nullable="false"/>
                 </column>
                 <column name="student_id" type="bigint">
-                    <constraints nullable="false" foreignKeyName="fk_references_students"
-                                 referencedTableName="students" referencedColumnNames="student_id"/>
+                    <constraints nullable="false"/>
                 </column>
                 <column name="specialty_id" type="bigint">
-                    <constraints nullable="false" foreignKeyName="fk_references_specialties"
-                                 referencedTableName="specialties" referencedColumnNames="specialty_id"/>
+                    <constraints nullable="false"/>
                 </column>
                 <column name="exclusion_id" type="bigint">
-                    <constraints nullable="false" foreignKeyName="fk_references_exclusions"
-                                 referencedTableName="exclusions" referencedColumnNames="exclusion_id"/>
+                    <constraints nullable="false"/>
                 </column>
                 <column name="user_id" type="bigint">
-                    <constraints nullable="false" foreignKeyName="fk_references_users"
-                                 referencedTableName="users" referencedColumnNames="user_id"/>
+                    <constraints nullable="false"/>
                 </column>
             </createTable>
+        </changeSet>
+        <changeSet id="add_fk_references_table" author="vdidenko">
+            <addForeignKeyConstraint constraintName="fk_references_students"
+                                     baseTableName="references" baseColumnNames="student_id"
+                                     referencedTableName="students" referencedColumnNames="student_id"
+                                     onDelete="RESTRICT" onUpdate="CASCADE"/>
+            <addForeignKeyConstraint constraintName="fk_references_specialties"
+                                     baseTableName="references" baseColumnNames="specialty_id"
+                                     referencedTableName="specialties" referencedColumnNames="specialty_id"
+                                     onDelete="RESTRICT" onUpdate="CASCADE"/>
+            <addForeignKeyConstraint constraintName="fk_references_exclusions"
+                                     baseTableName="references" baseColumnNames="exclusion_id"
+                                     referencedTableName="exclusions" referencedColumnNames="exclusion_id"
+                                     onDelete="RESTRICT" onUpdate="CASCADE"/>
+            <addForeignKeyConstraint constraintName="fk_references_users"
+                                     baseTableName="references" baseColumnNames="user_id"
+                                     referencedTableName="users" referencedColumnNames="user_id"
+                                     onDelete="RESTRICT" onUpdate="CASCADE"/>
         </changeSet>
         <changeSet id="create_table_for_many2many_signs_references" author="vdidenko">
             <createTable tableName="signs_references">
                 <column name="sign_id" type="bigint">
-                    <constraints primaryKey="true" foreignKeyName="fk_signs_references_signs"
-                                 referencedTableName="signs" referencedColumnNames="sign_id"/>
+                    <constraints primaryKey="true"/>
                 </column>
                 <column name="reference_id" type="bigint">
-                    <constraints primaryKey="true" foreignKeyName="fk_signs_references_references"
-                                 referencedTableName="references" referencedColumnNames="reference_id"/>
+                    <constraints primaryKey="true"/>
                 </column>
             </createTable>
+        </changeSet>
+        <changeSet id="add_fk_signs_references_table" author="vdidenko">
+            <addForeignKeyConstraint constraintName="fk_signs_references_signs"
+                                     baseTableName="signs_references" baseColumnNames="sign_id"
+                                     referencedTableName="signs" referencedColumnNames="sign_id"
+                                     onDelete="RESTRICT" onUpdate="CASCADE"/>
+            <addForeignKeyConstraint constraintName="fk_signs_references_references"
+                                     baseTableName="signs_references" baseColumnNames="reference_id"
+                                     referencedTableName="references" referencedColumnNames="reference_id"
+                                     onDelete="RESTRICT" onUpdate="CASCADE"/>
         </changeSet>
         <changeSet id="insert_test_data" author="vdidenko">
             <sqlFile path="classpath:db/insert-test-data.sql"/>

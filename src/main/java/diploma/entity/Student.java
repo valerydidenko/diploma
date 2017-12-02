@@ -1,11 +1,10 @@
 package diploma.entity;
 
-import diploma.enums.Degree;
+import diploma.enums.DegreeEnum;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -22,7 +21,7 @@ public class Student {
     private String engName;
     private String engFatherName;
     private String engCountry;
-    private Degree degree;
+    private DegreeEnum degree;
     private Date dateOfBirth;
     private int getIntoYear;
     private int graduateYear;
@@ -30,9 +29,7 @@ public class Student {
     public Student () {
     }
 
-    public Student (Long id, Long usedeId, String ukrSurname, String ukrName,
-                    String ukrCountry, String engSurname, String engName, String engCountry,
-                    Degree degree, Date dateOfBirth, int getIntoYear, int graduateYear) {
+    public Student (Long id, Long usedeId, String ukrSurname, String ukrName, String ukrCountry, String engSurname, String engName, String engCountry, DegreeEnum degree, Date dateOfBirth, int getIntoYear, int graduateYear) {
         this.id = id;
         this.usedeId = usedeId;
         this.ukrSurname = ukrSurname;
@@ -101,6 +98,11 @@ public class Student {
         return result;
     }
 
+    @Override
+    public String toString () {
+        return "Student{" + "id=" + id + ", usedeId=" + usedeId + ", ukrSurname='" + ukrSurname + '\'' + ", ukrName='" + ukrName + '\'' + ", ukrFatherName='" + ukrFatherName + '\'' + ", ukrCountry='" + ukrCountry + '\'' + ", engSurname='" + engSurname + '\'' + ", engName='" + engName + '\'' + ", engFatherName='" + engFatherName + '\'' + ", engCountry='" + engCountry + '\'' + ", degree=" + degree + ", dateOfBirth=" + dateOfBirth + ", " + "getIntoYear=" + getIntoYear + ", graduateYear=" + graduateYear + '}';
+    }
+
     @Id
     @GeneratedValue
     @Column(name = "student_id")
@@ -112,8 +114,7 @@ public class Student {
         this.id = id;
     }
 
-    @Column(name = "usede_id")
-    @NotNull
+    @Column(name = "usede_id", nullable = false, unique = true)
     public Long getUsedeId () {
         return usedeId;
     }
@@ -122,9 +123,8 @@ public class Student {
         this.usedeId = usedeId;
     }
 
-    @Column(name = "ukr_surname")
-    @NotNull
-    @Size(max = 60)
+    @Column(name = "ukr_surname", nullable = false, length = 60)
+    @NotEmpty
     public String getUkrSurname () {
         return ukrSurname;
     }
@@ -133,9 +133,8 @@ public class Student {
         this.ukrSurname = ukrSurname;
     }
 
-    @Column(name = "ukr_name")
-    @NotNull
-    @Size(max = 60)
+    @Column(name = "ukr_name", nullable = false, length = 60)
+    @NotEmpty
     public String getUkrName () {
         return ukrName;
     }
@@ -144,8 +143,7 @@ public class Student {
         this.ukrName = ukrName;
     }
 
-    @Column(name = "ukr_father_name")
-    @Size(max = 60)
+    @Column(name = "ukr_father_name", length = 60)
     public String getUkrFatherName () {
         return ukrFatherName;
     }
@@ -154,9 +152,8 @@ public class Student {
         this.ukrFatherName = ukrFatherName;
     }
 
-    @Column(name = "ukr_country")
-    @NotNull
-    @Size(max = 60)
+    @Column(name = "ukr_country", nullable = false, length = 60)
+    @NotEmpty
     public String getUkrCountry () {
         return ukrCountry;
     }
@@ -165,9 +162,8 @@ public class Student {
         this.ukrCountry = ukrCountry;
     }
 
-    @Column(name = "eng_surname")
-    @NotNull
-    @Size(max = 60)
+    @Column(name = "eng_surname", nullable = false, length = 60)
+    @NotEmpty
     public String getEngSurname () {
         return engSurname;
     }
@@ -176,9 +172,8 @@ public class Student {
         this.engSurname = engSurname;
     }
 
-    @Column(name = "eng_name")
-    @NotNull
-    @Size(max = 60)
+    @Column(name = "eng_name", nullable = false, length = 60)
+    @NotEmpty
     public String getEngName () {
         return engName;
     }
@@ -187,8 +182,7 @@ public class Student {
         this.engName = engName;
     }
 
-    @Column(name = "eng_father_name")
-    @Size(max = 60)
+    @Column(name = "eng_father_name", length = 60)
     public String getEngFatherName () {
         return engFatherName;
     }
@@ -197,9 +191,8 @@ public class Student {
         this.engFatherName = engFatherName;
     }
 
-    @Column(name = "eng_country")
-    @NotNull
-    @Size(max = 60)
+    @Column(name = "eng_country", nullable = false, length = 60)
+    @NotEmpty
     public String getEngCountry () {
         return engCountry;
     }
@@ -208,19 +201,17 @@ public class Student {
         this.engCountry = engCountry;
     }
 
-    @Column(name = "degree", columnDefinition = "enum('Bachelor','Specialist','Master')")
-    @NotNull
+    @Column(name = "degree", nullable = false, columnDefinition = "enum('Bachelor','Specialist','Master')")
     @Enumerated(EnumType.STRING)
-    public Degree getDegree () {
+    public DegreeEnum getDegree () {
         return degree;
     }
 
-    public void setDegree (Degree degree) {
+    public void setDegree (DegreeEnum degree) {
         this.degree = degree;
     }
 
-    @Column(name = "date_of_birth")
-    @NotNull
+    @Column(name = "date_of_birth", nullable = false)
     @Temporal(TemporalType.DATE)
     public Date getDateOfBirth () {
         return dateOfBirth;
@@ -230,9 +221,8 @@ public class Student {
         this.dateOfBirth = dateOfBirth;
     }
 
-    @Column(name = "get_into_year")
-    @NotNull
-    @Min(2000)
+    @Column(name = "get_into_year", nullable = false)
+    @Min(1995)
     public int getGetIntoYear () {
         return getIntoYear;
     }
@@ -241,9 +231,8 @@ public class Student {
         this.getIntoYear = getIntoYear;
     }
 
-    @Column(name = "graduate_year")
-    @NotNull
-    @Min(2001)
+    @Column(name = "graduate_year", nullable = false)
+    @Min(1996)
     public int getGraduateYear () {
         return graduateYear;
     }

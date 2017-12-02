@@ -10,12 +10,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = AppConfig.class)
@@ -48,21 +46,6 @@ public class TestUserService {
     }
 
     @Test
-    public void testSaveUser () {
-        User user = new User();
-        user.setLogin("new_test_login");
-        user.setPassword("new_test_pass");
-        user.setUkrName("new_test_ukr_name");
-        user.setUkrSurname("new_test_ukr_surname");
-        user.setEngName("new_test_eng_name");
-        user.setEngSurname("new_test_eng_surname");
-        user.setRole(RoleEnum.USER);
-        service.save(user);
-
-        assertNotNull(repository.getOne(user.getId()));
-    }
-
-    @Test
     public void testUpdateUser () {
         user.setLogin("upd_test_login");
         user.setPassword("upd_test_pass");
@@ -78,9 +61,9 @@ public class TestUserService {
         assertEquals(user, updated);
     }
 
-    @Test(expected = JpaObjectRetrievalFailureException.class)
+    @Test
     public void testDeleteUser () {
         service.delete(user);
-        repository.getOne(user.getId());
+        assertNull(repository.findOne(user.getId()));
     }
 }

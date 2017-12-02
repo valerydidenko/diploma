@@ -1,9 +1,9 @@
 package diploma.entity;
 
 import diploma.enums.RoleEnum;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -22,8 +22,7 @@ public class User {
     public User () {
     }
 
-    public User (String login, String password, String ukrSurname, String ukrName,
-                 String engSurname, String engName, RoleEnum role) {
+    public User (String login, String password, String ukrSurname, String ukrName, String engSurname, String engName, RoleEnum role) {
         this.login = login;
         this.password = password;
         this.ukrSurname = ukrSurname;
@@ -63,6 +62,11 @@ public class User {
         return result;
     }
 
+    @Override
+    public String toString () {
+        return "User{" + "id=" + id + ", login='" + login + '\'' + ", password='" + password + '\'' + ", ukrSurname='" + ukrSurname + '\'' + ", ukrName='" + ukrName + '\'' + ", engSurname='" + engSurname + '\'' + ", engName='" + engName + '\'' + ", role=" + role + '}';
+    }
+
     @Id
     @GeneratedValue
     @Column(name = "user_id")
@@ -74,8 +78,8 @@ public class User {
         this.id = id;
     }
 
-    @Column
-    @NotNull
+    @Column(nullable = false)
+    @NotEmpty
     @Size(min = 4, max = 16)
     public String getLogin () {
         return login;
@@ -85,8 +89,8 @@ public class User {
         this.login = login;
     }
 
-    @Column
-    @NotNull
+    @Column(nullable = false)
+    @NotEmpty
     @Size(min = 4, max = 16)
     public String getPassword () {
         return password;
@@ -96,9 +100,8 @@ public class User {
         this.password = password;
     }
 
-    @Column(name = "ukr_surname")
-    @NotNull
-    @Size(max = 60)
+    @Column(name = "ukr_surname", nullable = false, length = 60)
+    @NotEmpty
     public String getUkrSurname () {
         return ukrSurname;
     }
@@ -107,9 +110,8 @@ public class User {
         this.ukrSurname = ukrSurname;
     }
 
-    @Column(name = "ukr_name")
-    @NotNull
-    @Size(max = 60)
+    @Column(name = "ukr_name", nullable = false, length = 60)
+    @NotEmpty
     public String getUkrName () {
         return ukrName;
     }
@@ -118,9 +120,8 @@ public class User {
         this.ukrName = ukrName;
     }
 
-    @Column(name = "eng_surname")
-    @NotNull
-    @Size(max = 60)
+    @Column(name = "eng_surname", nullable = false, length = 60)
+    @NotEmpty
     public String getEngSurname () {
         return engSurname;
     }
@@ -129,9 +130,8 @@ public class User {
         this.engSurname = engSurname;
     }
 
-    @Column(name = "eng_name")
-    @NotNull
-    @Size(max = 60)
+    @Column(name = "eng_name", nullable = false, length = 60)
+    @NotEmpty
     public String getEngName () {
         return engName;
     }
@@ -140,8 +140,7 @@ public class User {
         this.engName = engName;
     }
 
-    @Column(name = "role", columnDefinition = "enum('ADMIN','USER')")
-    @NotNull
+    @Column(name = "role", nullable = false, columnDefinition = "enum('ADMIN','USER')")
     @Enumerated(EnumType.STRING)
     public RoleEnum getRole () {
         return role;
