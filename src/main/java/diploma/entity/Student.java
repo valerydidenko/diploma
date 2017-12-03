@@ -201,7 +201,7 @@ public class Student {
         this.engCountry = engCountry;
     }
 
-    @Column(name = "degree", nullable = false, columnDefinition = "enum('Bachelor','Specialist','Master')")
+    @Column(name = "degree", nullable = false)
     @Enumerated(EnumType.STRING)
     public DegreeEnum getDegree () {
         return degree;

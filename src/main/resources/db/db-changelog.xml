@@ -28,7 +28,7 @@
                 <column name="eng_name" type="varchar(60)">
                     <constraints nullable="false"/>
                 </column>
-                <column name="role" type="ENUM('ADMIN','USER')">
+                <column name="role" type="varchar(60)">
                     <constraints nullable="false"/>
                 </column>
             </createTable>
@@ -61,7 +61,7 @@
                 <column name="eng_country" type="varchar(60)">
                     <constraints nullable="false"/>
                 </column>
-                <column name="degree" type="ENUM('Bachelor','Specialist','Master')">
+                <column name="degree" type="varchar(60)">
                     <constraints nullable="false"/>
                 </column>
                 <column name="date_of_birth" type="date">

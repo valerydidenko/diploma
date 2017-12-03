@@ -140,7 +140,7 @@ public class User {
         this.engName = engName;
     }
 
-    @Column(name = "role", nullable = false, columnDefinition = "enum('ADMIN','USER')")
+    @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     public RoleEnum getRole () {
         return role;
