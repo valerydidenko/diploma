@@ -1,9 +1,12 @@
 package diploma.entity;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import java.util.Set;
 
 @Entity
 @Table(name = "specialties")
@@ -15,6 +18,7 @@ public class Specialty {
     private String ukrSpecialization;
     private String engSpecialization;
     private int year;
+    private Set<Subject> subjects;
 
     public Specialty () {
     }
@@ -121,5 +125,15 @@ public class Specialty {
 
     public void setYear (int year) {
         this.year = year;
+    }
+
+    @OneToMany(mappedBy = "specialty")
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
+    public Set<Subject> getSubjects () {
+        return subjects;
+    }
+
+    public void setSubjects (Set<Subject> subjects) {
+        this.subjects = subjects;
     }
 }

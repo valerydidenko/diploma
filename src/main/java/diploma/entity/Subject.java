@@ -1,5 +1,7 @@
 package diploma.entity;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -131,8 +133,9 @@ public class Subject {
         this.credit = credit;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "specialty_id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "specialty_id")
+    @Cascade({CascadeType.PERSIST, CascadeType.REFRESH})
     public Specialty getSpecialty () {
         return specialty;
     }

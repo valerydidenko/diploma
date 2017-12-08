@@ -85,5 +85,6 @@ public class TestSubjectService {
     public void testDeleteSubject () {
         subjectService.delete(subject);
         assertNull(subjectRepository.findOne(subject.getId()));
+        assertNotNull(specialtyRepository.findOne(specialty.getId()));
     }
 }

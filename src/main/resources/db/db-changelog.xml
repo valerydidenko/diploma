@@ -134,7 +134,7 @@
             <addForeignKeyConstraint constraintName="fk_subjects_specialties"
                                      baseTableName="subjects" baseColumnNames="specialty_id"
                                      referencedTableName="specialties" referencedColumnNames="specialty_id"
-                                     onDelete="RESTRICT" onUpdate="CASCADE"/>
+                                     onDelete="CASCADE" onUpdate="CASCADE"/>
         </changeSet>
         <changeSet id="create_table_exclusions" author="vdidenko">
             <createTable tableName="exclusions">
