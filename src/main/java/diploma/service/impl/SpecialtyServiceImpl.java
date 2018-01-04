@@ -15,22 +15,22 @@ public class SpecialtyServiceImpl implements BaseService<Specialty> {
     private SpecialtyRepository repository;
 
     @Override
-    public Specialty getById (long id) {
+    public Specialty getById(long id) {
         return repository.findOne(id);
     }
 
     @Override
-    public void save (Specialty specialty) {
+    public void save(Specialty specialty) {
         repository.save(specialty);
     }
 
     @Override
-    public void delete (Specialty specialty) {
+    public void delete(Specialty specialty) {
         repository.delete(specialty);
     }
 
     @Override
-    public void deleteById (long id) {
+    public void deleteById(long id) {
         repository.delete(id);
     }
 }

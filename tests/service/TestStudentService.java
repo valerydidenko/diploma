@@ -30,7 +30,7 @@ public class TestStudentService {
     private Student student;
 
     @Before
-    public void initEntities () {
+    public void initEntities() {
         student = new Student();
         student.setUsedeId(2341245L);
         student.setUkrSurname("Васько");
@@ -49,12 +49,12 @@ public class TestStudentService {
     }
 
     @Test
-    public void testGetById () {
+    public void testGetById() {
         assertEquals(student, service.getById(student.getId()));
     }
 
     @Test
-    public void testUpdateUser () {
+    public void testUpdateUser() {
         student.setUsedeId(2321245L);
         student.setUkrSurname("Васькоі");
         student.setUkrName("Анастасіяі");
@@ -76,7 +76,7 @@ public class TestStudentService {
     }
 
     @Test
-    public void testDeleteUser () {
+    public void testDeleteUser() {
         service.delete(student);
         assertNull(repository.findOne(student.getId()));
     }

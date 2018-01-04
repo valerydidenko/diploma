@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface SubjectService extends BaseService<Subject> {
 
-    List<Subject> getSubjectsBySpecialty (Specialty specialty);
+    List<Subject> getSubjectsBySpecialty(Specialty specialty);
 
 }

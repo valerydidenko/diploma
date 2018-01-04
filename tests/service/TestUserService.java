@@ -28,7 +28,7 @@ public class TestUserService {
     private User user;
 
     @Before
-    public void initEntities () {
+    public void initEntities() {
         user = new User();
         user.setLogin("test_login");
         user.setPassword("test_pass");
@@ -41,12 +41,12 @@ public class TestUserService {
     }
 
     @Test
-    public void testGetById () {
+    public void testGetById() {
         assertEquals(user, service.getById(user.getId()));
     }
 
     @Test
-    public void testUpdateUser () {
+    public void testUpdateUser() {
         user.setLogin("upd_test_login");
         user.setPassword("upd_test_pass");
         user.setUkrName("upd_test_ukr_name");
@@ -62,7 +62,7 @@ public class TestUserService {
     }
 
     @Test
-    public void testDeleteUser () {
+    public void testDeleteUser() {
         service.delete(user);
         assertNull(repository.findOne(user.getId()));
     }

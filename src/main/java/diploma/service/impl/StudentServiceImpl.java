@@ -15,22 +15,22 @@ public class StudentServiceImpl implements BaseService<Student> {
     private StudentRepository repository;
 
     @Override
-    public Student getById (long id) {
+    public Student getById(long id) {
         return repository.findOne(id);
     }
 
     @Override
-    public void save (Student student) {
+    public void save(Student student) {
         repository.save(student);
     }
 
     @Override
-    public void delete (Student student) {
+    public void delete(Student student) {
         repository.delete(student);
     }
 
     @Override
-    public void deleteById (long id) {
+    public void deleteById(long id) {
         repository.delete(id);
     }
 }

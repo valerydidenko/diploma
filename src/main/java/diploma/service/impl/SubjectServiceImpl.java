@@ -18,27 +18,27 @@ public class SubjectServiceImpl implements SubjectService {
     private SubjectRepository repository;
 
     @Override
-    public Subject getById (long id) {
+    public Subject getById(long id) {
         return repository.findOne(id);
     }
 
     @Override
-    public void save (Subject subject) {
+    public void save(Subject subject) {
         repository.save(subject);
     }
 
     @Override
-    public void delete (Subject subject) {
+    public void delete(Subject subject) {
         repository.delete(subject);
     }
 
     @Override
-    public void deleteById (long id) {
+    public void deleteById(long id) {
         repository.delete(id);
     }
 
     @Override
-    public List<Subject> getSubjectsBySpecialty (Specialty specialty) {
+    public List<Subject> getSubjectsBySpecialty(Specialty specialty) {
         return repository.findAllBySpecialty(specialty);
     }
 

@@ -2,11 +2,11 @@ package diploma.service;
 
 public interface BaseService<T> {
 
-    T getById (long id);
+    T getById(long id);
 
-    void save (T object);
+    void save(T object);
 
-    void delete (T object);
+    void delete(T object);
 
-    void deleteById (long id);
+    void deleteById(long id);
 }

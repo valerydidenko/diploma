@@ -9,28 +9,28 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class UserServiceImpl implements BaseService<User>{
+public class UserServiceImpl implements BaseService<User> {
 
     @Autowired
     private UserRepository repository;
 
     @Override
-    public User getById (long id) {
+    public User getById(long id) {
         return repository.getOne(id);
     }
 
     @Override
-    public void save (User user) {
+    public void save(User user) {
         repository.save(user);
     }
 
     @Override
-    public void deleteById (long id) {
+    public void deleteById(long id) {
         repository.delete(id);
     }
 
     @Override
-    public void delete (User user) {
+    public void delete(User user) {
         repository.delete(user);
     }
 }

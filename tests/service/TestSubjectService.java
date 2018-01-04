@@ -34,7 +34,7 @@ public class TestSubjectService {
     private Specialty specialty;
 
     @Before
-    public void initEntitities () {
+    public void initEntitities() {
         specialty = new Specialty();
         specialty.setUkrName("Тест комп науки 1");
         specialty.setUkrSpecialization("Тест информ системы 1");
@@ -54,12 +54,12 @@ public class TestSubjectService {
     }
 
     @Test
-    public void testGetById () {
+    public void testGetById() {
         assertEquals(subject, subjectRepository.findOne(subject.getId()));
     }
 
     @Test
-    public void testUpdateSubject () {
+    public void testUpdateSubject() {
         Specialty specialty = new Specialty();
         specialty.setUkrName("NEW Тест комп науки 1");
         specialty.setUkrSpecialization("NEW Тест информ системы 1");
@@ -82,7 +82,7 @@ public class TestSubjectService {
     }
 
     @Test
-    public void testDeleteSubject () {
+    public void testDeleteSubject() {
         subjectService.delete(subject);
         assertNull(subjectRepository.findOne(subject.getId()));
         assertNotNull(specialtyRepository.findOne(specialty.getId()));

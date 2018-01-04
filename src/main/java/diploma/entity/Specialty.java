@@ -6,11 +6,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "specialties")
-public class Specialty {
+public class Specialty implements Serializable {
+
+    private static final long serialVersionUID = -1265002214837795680L;
 
     private Long id;
     private String ukrName;
@@ -20,10 +23,11 @@ public class Specialty {
     private int year;
     private Set<Subject> subjects;
 
-    public Specialty () {
+    public Specialty() {
     }
 
-    public Specialty (String ukrName, String engName, String ukrSpecialization, String engSpecialization, int year) {
+    public Specialty(String ukrName, String engName, String ukrSpecialization,
+                     String engSpecialization, int year) {
         this.ukrName = ukrName;
         this.engName = engName;
         this.ukrSpecialization = ukrSpecialization;
@@ -32,7 +36,7 @@ public class Specialty {
     }
 
     @Override
-    public boolean equals (Object o) {
+    public boolean equals(Object o) {
         if (this == o)
             return true;
         if (!(o instanceof Specialty))
@@ -52,7 +56,7 @@ public class Specialty {
     }
 
     @Override
-    public int hashCode () {
+    public int hashCode() {
         int result = ukrName.hashCode();
         result = 31 * result + engName.hashCode();
         result = 31 * result + ukrSpecialization.hashCode();
@@ -62,78 +66,85 @@ public class Specialty {
     }
 
     @Override
-    public String toString () {
-        return "Specialty{" + "id=" + id + ", ukrName='" + ukrName + '\'' + ", engName='" + engName + '\'' + ", ukrSpecialization='" + ukrSpecialization + '\'' + ", engSpecialization='" + engSpecialization + '\'' + ", year=" + year + '}';
+    public String toString() {
+        return "Specialty{" +
+                "id=" + id +
+                ", ukrName='" + ukrName + '\'' +
+                ", engName='" + engName + '\'' +
+                ", ukrSpecialization='" + ukrSpecialization + '\'' +
+                ", engSpecialization='" + engSpecialization + '\'' +
+                ", year=" + year +
+                '}';
     }
 
     @Id
     @GeneratedValue
     @Column(name = "specialty_id")
-    public Long getId () {
+    public Long getId() {
         return id;
     }
 
-    public void setId (Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     @Column(name = "ukr_name", nullable = false, length = 150)
     @NotEmpty
-    public String getUkrName () {
+    public String getUkrName() {
         return ukrName;
     }
 
-    public void setUkrName (String ukrName) {
+    public void setUkrName(String ukrName) {
         this.ukrName = ukrName;
     }
 
     @Column(name = "eng_name", nullable = false, length = 150)
     @NotEmpty
-    public String getEngName () {
+    public String getEngName() {
         return engName;
     }
 
-    public void setEngName (String engName) {
+    public void setEngName(String engName) {
         this.engName = engName;
     }
 
     @Column(name = "ukr_specialization", nullable = false, length = 150)
     @NotEmpty
-    public String getUkrSpecialization () {
+    public String getUkrSpecialization() {
         return ukrSpecialization;
     }
 
-    public void setUkrSpecialization (String ukrSpecialization) {
+    public void setUkrSpecialization(String ukrSpecialization) {
         this.ukrSpecialization = ukrSpecialization;
     }
 
     @Column(name = "eng_specialization", nullable = false, length = 150)
     @NotEmpty
-    public String getEngSpecialization () {
+    public String getEngSpecialization() {
         return engSpecialization;
     }
 
-    public void setEngSpecialization (String engSpecialization) {
+    public void setEngSpecialization(String engSpecialization) {
         this.engSpecialization = engSpecialization;
     }
 
     @Column(nullable = false)
     @Min(1995)
-    public int getYear () {
+    public int getYear() {
         return year;
     }
 
-    public void setYear (int year) {
+    public void setYear(int year) {
         this.year = year;
     }
 
     @OneToMany(mappedBy = "specialty")
-    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
-    public Set<Subject> getSubjects () {
+    @Cascade(CascadeType.ALL)
+    public Set<Subject> getSubjects() {
         return subjects;
     }
 
-    public void setSubjects (Set<Subject> subjects) {
+    public void setSubjects(Set<Subject> subjects) {
         this.subjects = subjects;
     }
 }
