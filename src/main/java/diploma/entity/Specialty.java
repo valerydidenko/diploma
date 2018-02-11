@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -24,6 +26,7 @@ public class Specialty implements Serializable {
     private Set<Subject> subjects;
 
     public Specialty() {
+    	this.subjects = new HashSet<>();
     }
 
     public Specialty(String ukrName, String engName, String ukrSpecialization,
@@ -33,36 +36,24 @@ public class Specialty implements Serializable {
         this.ukrSpecialization = ukrSpecialization;
         this.engSpecialization = engSpecialization;
         this.year = year;
+	    this.subjects = new HashSet<>();
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof Specialty))
-            return false;
-
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Specialty specialty = (Specialty) o;
-
-        if (year != specialty.year)
-            return false;
-        if (!ukrName.equals(specialty.ukrName))
-            return false;
-        if (!engName.equals(specialty.engName))
-            return false;
-        if (!ukrSpecialization.equals(specialty.ukrSpecialization))
-            return false;
-        return engSpecialization.equals(specialty.engSpecialization);
+        return year == specialty.year &&
+                Objects.equals(ukrName, specialty.ukrName) &&
+                Objects.equals(engName, specialty.engName) &&
+                Objects.equals(ukrSpecialization, specialty.ukrSpecialization) &&
+                Objects.equals(engSpecialization, specialty.engSpecialization);
     }
 
     @Override
     public int hashCode() {
-        int result = ukrName.hashCode();
-        result = 31 * result + engName.hashCode();
-        result = 31 * result + ukrSpecialization.hashCode();
-        result = 31 * result + engSpecialization.hashCode();
-        result = 31 * result + year;
-        return result;
+        return Objects.hash(ukrName, engName, ukrSpecialization, engSpecialization, year);
     }
 
     @Override
@@ -146,5 +137,23 @@ public class Specialty implements Serializable {
 
     public void setSubjects(Set<Subject> subjects) {
         this.subjects = subjects;
+    }
+
+    public void addSubject(Subject subject) {
+		addSubject(subject, true);
+    }
+
+    public void addSubject(Subject subject, boolean set) {
+    	if (subject != null) {
+		    getSubjects().add(subject);
+		    if (set) {
+			    subject.setSpecialty(this, false);
+		    }
+	    }
+    }
+
+    public void removeSubject(Subject subject) {
+    	getSubjects().remove(subject);
+    	subject.setSpecialty(null);
     }
 }

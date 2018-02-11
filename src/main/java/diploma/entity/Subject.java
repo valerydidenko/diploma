@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "subjects")
@@ -38,35 +39,20 @@ public class Subject implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof Subject))
-            return false;
-
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Subject subject = (Subject) o;
-
-        if (semester != subject.semester)
-            return false;
-        if (Float.compare(subject.credit, credit) != 0)
-            return false;
-        if (!ukrName.equals(subject.ukrName))
-            return false;
-        if (!engName.equals(subject.engName))
-            return false;
-        if (!code.equals(subject.code))
-            return false;
-        return specialty.equals(subject.specialty);
+        return semester == subject.semester &&
+                Float.compare(subject.credit, credit) == 0 &&
+                Objects.equals(ukrName, subject.ukrName) &&
+                Objects.equals(engName, subject.engName) &&
+                Objects.equals(code, subject.code) &&
+                Objects.equals(specialty, subject.specialty);
     }
 
     @Override
     public int hashCode() {
-        int result = semester;
-        result = 31 * result + ukrName.hashCode();
-        result = 31 * result + engName.hashCode();
-        result = 31 * result + code.hashCode();
-        result = 31 * result + (credit != +0.0f ? Float.floatToIntBits(credit) : 0);
-        result = 31 * result + specialty.hashCode();
-        return result;
+        return Objects.hash(semester, ukrName, engName, code, credit, specialty);
     }
 
     @Override
@@ -145,14 +131,21 @@ public class Subject implements Serializable {
         this.credit = credit;
     }
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "specialty_id")
-    @Cascade({CascadeType.PERSIST, CascadeType.REFRESH})
+    @Cascade({CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
     public Specialty getSpecialty() {
         return specialty;
     }
 
     public void setSpecialty(Specialty specialty) {
-        this.specialty = specialty;
+    	setSpecialty(specialty, true);
+    }
+
+    public void setSpecialty(Specialty specialty, boolean add) {
+	    this.specialty = specialty;
+    	if (specialty != null && add) {
+		    specialty.addSubject(this, false);
+	    }
     }
 }

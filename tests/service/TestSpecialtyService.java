@@ -6,8 +6,6 @@ import diploma.entity.Subject;
 import diploma.repository.SpecialtyRepository;
 import diploma.repository.SubjectRepository;
 import diploma.service.impl.SpecialtyServiceImpl;
-import diploma.utils.SpecialtyUtils;
-import diploma.utils.SubjectUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,8 +17,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Set;
 
+import static diploma.utils.SpecialtyUtils.generateSpecialty;
+import static diploma.utils.SubjectUtils.generateSetOfSubjects;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
@@ -30,8 +32,11 @@ public class TestSpecialtyService {
 
     private static final Logger log = LoggerFactory.getLogger(TestSpecialtyService.class);
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Autowired
-    private SpecialtyServiceImpl service;
+    private SpecialtyServiceImpl specialtyService;
 
     @Autowired
     private SpecialtyRepository specialtyRepository;
@@ -43,30 +48,57 @@ public class TestSpecialtyService {
 
     @Before
     public void initEntities() {
-        specialty = SpecialtyUtils.generateSpecialty();
+        specialty = generateSpecialty();
+
+        log.info("GENERATE SPECIALTY - {}", specialty);
+
+        for (Subject subject : generateSetOfSubjects(3)) {
+        	specialty.addSubject(subject);
+        }
+
+        log.info("GENERATE SUBJECTS FOR SPECIALTY - {}", specialty.getSubjects());
+
+        Subject subject = specialty.getSubjects().iterator().next();
+
+        log.info("CHECK PERSISTENCE BEFORE SAVE");
+        log.info("SPECIALTY PERSIST - {}", entityManager.contains(specialty));
+        log.info("SUBJECT FROM SPECIALTY PERSIST - {}", entityManager.contains(subject));
+
         specialtyRepository.save(specialty);
 
-        Set<Subject> subjects = SubjectUtils.generateSetOfSubjects(3);
-        subjects.forEach(subject -> subject.setSpecialty(specialty));
-        subjectRepository.save(subjects);
-        specialty.setSubjects(subjects);
-    }
+        log.info("SPECIALTY WAS SAVED - {}", specialty);
+        log.info("CHECK PERSISTENCE AFTER SAVE");
+        log.info("SPECIALTY PERSIST - {}", entityManager.contains(specialty));
+        log.info("SUBJECT FROM SPECIALTY PERSIST - {}", entityManager.contains(subject));
+        log.info("DETACH SPECIALTY");
 
-    @Test
-    public void testGetById() {
-        assertEquals(specialty, service.getById(specialty.getId()));
+        entityManager.detach(specialty);
+
+        log.info("CHECK PERSISTENCE AFTER DETACH");
+        log.info("SPECIALTY PERSIST - {}", entityManager.contains(specialty));
+        log.info("SUBJECT FROM SPECIALTY PERSIST - {}\n", entityManager.contains(subject));
     }
 
     @Test
     public void testUpdateSpecialty() {
+        log.info("UPDATE SPECIALTY METHOD");
+
         specialty.setUkrName("Тест комп науки UPD");
         specialty.setUkrSpecialization("Тест информ системы UPD");
         specialty.setEngName("Test comp science UPD");
         specialty.setEngSpecialization("Test inform systems UPD");
         specialty.setYear(2007);
-        //TODO: Why can I comment this method and object will be updated? Perhaps state of this object is PERSISTENT.
-        //service.save(specialty);
+
+        log.info("LOCAL SPECIALTY WAS UPDATED - {}", specialty);
+        log.info("SPECIALTY FROM DB - {}", specialtyRepository.findOne(specialty.getId()));
+        log.info("APPLY CHANGES");
+
+        specialtyService.save(specialty);
+
         Specialty updated = specialtyRepository.findOne(specialty.getId());
+
+        log.info("SPECIALTY FROM DB - {}\n", updated);
+
         assertNotNull(updated);
         assertEquals(specialty, updated);
         assertNotNull(subjectRepository.findAllBySpecialty(specialty));
@@ -75,32 +107,69 @@ public class TestSpecialtyService {
 
     @Test
     public void testDeleteSpecialty() {
-        service.delete(specialty);
+        log.info("SPECIALTY FOR DELETE - {}", specialty);
+
+        Set<Subject> subjects = specialty.getSubjects();
+
+        log.info("SPECIALTY SUBJECTS");
+
+        for (Subject subject : subjects) {
+            log.info("SUBJECT: id - {}, name - {}", subject.getId(), subject.getEngName());
+        }
+
+        specialtyService.delete(specialty);
+
+        log.info("SPECIALTY WAS DELETED");
+        log.info("FIND ONE SPECIALTY BY ID {} - {}", specialty.getId(), specialtyRepository.findOne(specialty.getId()));
+        log.info("CHECK IF SUBJECTS HAD BEEN DELETED ALSO");
+
+        for (Subject subject : subjects) {
+            log.info("FIND ONE SUBJECT BY ID {} - {}", subject.getId(), subjectRepository.findOne(subject.getId()));
+        }
+
+        log.info("FIND ALL SUBJECTS BY SPECIALTY - {}\n", subjectRepository.findAllBySpecialty(specialty).size());
+
         assertNull(specialtyRepository.findOne(specialty.getId()));
-        assertNull(subjectRepository.findAllBySpecialty(specialty));
         assertEquals(0, subjectRepository.findAllBySpecialty(specialty).size());
     }
 
     @Test(expected = DataIntegrityViolationException.class)
-    public void testSaveSpecialtiesViolateUniqueConstraint() {
+    public void testSaveSpecialtyViolateUniqueConstraint() {
+        log.info("UNIQUE CONSTRAINTS FOR SPECIALTY: ukrName, ukrSpecialization, year");
+        log.info("SAVED specialty: ukrName - {}, ukrSpecialization - {}, year - {}",
+                specialty.getUkrName(), specialty.getUkrSpecialization(), specialty.getYear());
+
         Specialty specialty1 = new Specialty();
         specialty1.setUkrName("Тест комп науки");
         specialty1.setUkrSpecialization("Тест информ системы");
         specialty1.setEngName("XXX");
         specialty1.setEngSpecialization("XXX");
         specialty1.setYear(2007);
-        service.save(specialty1);
+
+        log.info("NEW specialty: ukrName - {}, ukrSpecialization - {}, year - {}\n",
+                specialty1.getUkrName(), specialty1.getUkrSpecialization(), specialty1.getYear());
+        specialtyService.save(specialty1);
     }
 
     @Test
-    public void testSaveSpecialtiesViolate2of3UniqueField() {
+    public void testSaveSpecialtyViolate2of3UniqueField() {
+        log.info("UNIQUE CONSTRAINTS FOR SPECIALTY: ukrName, ukrSpecialization, year");
+        log.info("SAVED specialty: ukrName - {}, ukrSpecialization - {}, year - {}",
+                specialty.getUkrName(), specialty.getUkrSpecialization(), specialty.getYear());
+
         Specialty specialty1 = new Specialty();
         specialty1.setUkrName("Тест комп науки");
         specialty1.setUkrSpecialization("Тест информ системы");
         specialty1.setEngName("XXX");
         specialty1.setEngSpecialization("XXX");
         specialty1.setYear(2009);
-        service.save(specialty1);
+
+        log.info("NEW specialty: ukrName - {}, ukrSpecialization - {}, year - {}",
+                specialty1.getUkrName(), specialty1.getUkrSpecialization(), specialty1.getYear());
+
+        specialtyService.save(specialty1);
+        log.info("NEW SPECIALTY WAS SAVED SUCCESSFULLY WITH ID - {}", specialty1.getId());
+        log.info("FIND ONE SPECIALTY BY ID {} - {}\n", specialty1.getId(), specialtyRepository.findOne(specialty1.getId()));
 
         assertNotNull(specialtyRepository.findOne(specialty1.getId()));
         assertEquals(specialty.getUkrName(), specialty1.getUkrName());
