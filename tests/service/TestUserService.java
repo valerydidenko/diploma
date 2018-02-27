@@ -41,11 +41,6 @@ public class TestUserService {
     }
 
     @Test
-    public void testGetById() {
-        assertEquals(user, service.getById(user.getId()));
-    }
-
-    @Test
     public void testUpdateUser() {
         user.setLogin("upd_test_login");
         user.setPassword("upd_test_pass");

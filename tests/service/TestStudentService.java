@@ -49,12 +49,7 @@ public class TestStudentService {
     }
 
     @Test
-    public void testGetById() {
-        assertEquals(student, service.getById(student.getId()));
-    }
-
-    @Test
-    public void testUpdateUser() {
+    public void testUpdateStudent() {
         student.setUsedeId(2321245L);
         student.setUkrSurname("Васькоі");
         student.setUkrName("Анастасіяі");
@@ -76,7 +71,7 @@ public class TestStudentService {
     }
 
     @Test
-    public void testDeleteUser() {
+    public void testDeleteStudent() {
         service.delete(student);
         assertNull(repository.findOne(student.getId()));
     }
