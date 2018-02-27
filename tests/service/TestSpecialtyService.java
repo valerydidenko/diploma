@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.Set;
 
 import static diploma.utils.SpecialtyUtils.generateSpecialty;
 import static diploma.utils.SubjectUtils.generateSetOfSubjects;
@@ -53,35 +52,26 @@ public class TestSpecialtyService {
         log.info("GENERATE SPECIALTY - {}", specialty);
 
         for (Subject subject : generateSetOfSubjects(3)) {
-        	specialty.addSubject(subject);
+            subject.setSpecialty(specialty);
+            specialty.addSubject(subject);
         }
 
         log.info("GENERATE SUBJECTS FOR SPECIALTY - {}", specialty.getSubjects());
 
-        Subject subject = specialty.getSubjects().iterator().next();
-
-        log.info("CHECK PERSISTENCE BEFORE SAVE");
-        log.info("SPECIALTY PERSIST - {}", entityManager.contains(specialty));
-        log.info("SUBJECT FROM SPECIALTY PERSIST - {}", entityManager.contains(subject));
-
         specialtyRepository.save(specialty);
 
         log.info("SPECIALTY WAS SAVED - {}", specialty);
-        log.info("CHECK PERSISTENCE AFTER SAVE");
-        log.info("SPECIALTY PERSIST - {}", entityManager.contains(specialty));
-        log.info("SUBJECT FROM SPECIALTY PERSIST - {}", entityManager.contains(subject));
-        log.info("DETACH SPECIALTY");
-
-        entityManager.detach(specialty);
-
-        log.info("CHECK PERSISTENCE AFTER DETACH");
-        log.info("SPECIALTY PERSIST - {}", entityManager.contains(specialty));
-        log.info("SUBJECT FROM SPECIALTY PERSIST - {}\n", entityManager.contains(subject));
     }
 
     @Test
     public void testUpdateSpecialty() {
-        log.info("UPDATE SPECIALTY METHOD");
+        log.info("CHECK PERSISTENCE AFTER SAVE");
+        log.info("SPECIALTY PERSIST - {}", entityManager.contains(specialty));
+        log.info("DETACH SPECIALTY");
+
+        entityManager.detach(specialty);
+
+        log.info("SPECIALTY PERSIST - {}", entityManager.contains(specialty));
 
         specialty.setUkrName("Тест комп науки UPD");
         specialty.setUkrSpecialization("Тест информ системы UPD");
@@ -109,24 +99,10 @@ public class TestSpecialtyService {
     public void testDeleteSpecialty() {
         log.info("SPECIALTY FOR DELETE - {}", specialty);
 
-        Set<Subject> subjects = specialty.getSubjects();
-
-        log.info("SPECIALTY SUBJECTS");
-
-        for (Subject subject : subjects) {
-            log.info("SUBJECT: id - {}, name - {}", subject.getId(), subject.getEngName());
-        }
-
         specialtyService.delete(specialty);
 
         log.info("SPECIALTY WAS DELETED");
         log.info("FIND ONE SPECIALTY BY ID {} - {}", specialty.getId(), specialtyRepository.findOne(specialty.getId()));
-        log.info("CHECK IF SUBJECTS HAD BEEN DELETED ALSO");
-
-        for (Subject subject : subjects) {
-            log.info("FIND ONE SUBJECT BY ID {} - {}", subject.getId(), subjectRepository.findOne(subject.getId()));
-        }
-
         log.info("FIND ALL SUBJECTS BY SPECIALTY - {}\n", subjectRepository.findAllBySpecialty(specialty).size());
 
         assertNull(specialtyRepository.findOne(specialty.getId()));
@@ -148,6 +124,7 @@ public class TestSpecialtyService {
 
         log.info("NEW specialty: ukrName - {}, ukrSpecialization - {}, year - {}\n",
                 specialty1.getUkrName(), specialty1.getUkrSpecialization(), specialty1.getYear());
+
         specialtyService.save(specialty1);
     }
 
@@ -168,8 +145,8 @@ public class TestSpecialtyService {
                 specialty1.getUkrName(), specialty1.getUkrSpecialization(), specialty1.getYear());
 
         specialtyService.save(specialty1);
-        log.info("NEW SPECIALTY WAS SAVED SUCCESSFULLY WITH ID - {}", specialty1.getId());
-        log.info("FIND ONE SPECIALTY BY ID {} - {}\n", specialty1.getId(), specialtyRepository.findOne(specialty1.getId()));
+
+        log.info("NEW SPECIALTY WAS SAVED SUCCESSFULLY - {}", specialtyRepository.findOne(specialty1.getId()));
 
         assertNotNull(specialtyRepository.findOne(specialty1.getId()));
         assertEquals(specialty.getUkrName(), specialty1.getUkrName());
