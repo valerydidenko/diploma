@@ -139,13 +139,6 @@ public class Subject implements Serializable {
     }
 
     public void setSpecialty(Specialty specialty) {
-    	setSpecialty(specialty, true);
-    }
-
-    public void setSpecialty(Specialty specialty, boolean add) {
-	    this.specialty = specialty;
-    	if (specialty != null && add) {
-		    specialty.addSubject(this, false);
-	    }
+    	this.specialty = specialty;
     }
 }

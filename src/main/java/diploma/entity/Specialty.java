@@ -140,20 +140,6 @@ public class Specialty implements Serializable {
     }
 
     public void addSubject(Subject subject) {
-		addSubject(subject, true);
-    }
-
-    public void addSubject(Subject subject, boolean set) {
-    	if (subject != null) {
-		    getSubjects().add(subject);
-		    if (set) {
-			    subject.setSpecialty(this, false);
-		    }
-	    }
-    }
-
-    public void removeSubject(Subject subject) {
-    	getSubjects().remove(subject);
-    	subject.setSpecialty(null);
+		this.subjects.add(subject);
     }
 }

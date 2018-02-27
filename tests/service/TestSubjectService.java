@@ -6,8 +6,6 @@ import diploma.entity.Subject;
 import diploma.repository.SpecialtyRepository;
 import diploma.repository.SubjectRepository;
 import diploma.service.SubjectService;
-import diploma.utils.SpecialtyUtils;
-import diploma.utils.SubjectUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,8 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import static diploma.utils.SpecialtyUtils.*;
-import static diploma.utils.SubjectUtils.*;
+import static diploma.utils.SpecialtyUtils.generateSpecialty;
+import static diploma.utils.SubjectUtils.generateSubject;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
@@ -56,32 +54,25 @@ public class TestSubjectService {
 
         subject = generateSubject();
         subject.setSpecialty(specialty);
+        specialty.addSubject(subject);
 
         log.info("GENERATE SUBJECT - {}", subject);
-
-        log.info("CHECK PERSISTENCE BEFORE SAVE");
-        log.info("SPECIALTY PERSIST - {}", entityManager.contains(specialty));
-        log.info("SUBJECT PERSIST - {}", entityManager.contains(subject));
 
         subjectRepository.save(subject);
 
         log.info("SUBJECT WAS SAVED - {}", subject);
         log.info("SPECIALTY HAD BEEN SAVED ALSO - {}", specialty);
+    }
+
+    @Test
+    public void testUpdateSubject() {
         log.info("CHECK PERSISTENCE AFTER SAVE");
-        log.info("SPECIALTY PERSIST - {}", entityManager.contains(specialty));
         log.info("SUBJECT PERSIST - {}", entityManager.contains(subject));
         log.info("DETACH SUBJECT");
 
         entityManager.detach(subject);
 
-        log.info("CHECK PERSISTENCE AFTER DETACH");
-        log.info("SPECIALTY PERSIST - {}", entityManager.contains(specialty));
-        log.info("SUBJECT PERSIST - {}\n", entityManager.contains(subject));
-    }
-
-    @Test
-    public void testUpdateSubject() {
-        log.info("UPDATE SUBJECT METHOD");
+        log.info("SUBJECT PERSIST - {}", entityManager.contains(subject));
 
         subject.setSemester(3);
         subject.setUkrName("NEW Тест матан");
@@ -106,8 +97,6 @@ public class TestSubjectService {
     @Test
     public void testDeleteSubject() {
         log.info("SUBJECT FOR DELETE - {}", subject);
-        log.info("FIND ONE SPECIALTY BY ID {} - {}", specialty.getId(), specialtyRepository.findOne(specialty.getId()));
-        log.info("FIND ALL SUBJECTS BY SPECIALTY - {}", subjectRepository.findAllBySpecialty(specialty));
 
         subjectService.delete(subject);
 
@@ -115,7 +104,6 @@ public class TestSubjectService {
         log.info("FIND ONE SUBJECT BY ID {} - {}", subject.getId(), subjectRepository.findOne(subject.getId()));
         log.info("CHECK IF SPECIALTY HAD NOT BEEN DELETED ALSO");
         log.info("FIND ONE SPECIALTY BY ID {} - {}", specialty.getId(), specialtyRepository.findOne(specialty.getId()));
-        log.info("FIND ALL SUBJECTS BY SPECIALTY - {}\n", subjectRepository.findAllBySpecialty(specialty));
 
         assertNull(subjectRepository.findOne(subject.getId()));
         assertNotNull(specialtyRepository.findOne(specialty.getId()));
@@ -140,14 +128,13 @@ public class TestSubjectService {
                 subject1.getSemester(), subject1.getUkrName(), subject1.getSpecialty().getId());
 
         subjectService.save(subject1);
-        //specialtyRepository.save(specialty);
     }
 
     @Test
     public void testSaveSpecialtyViolate2of3UniqueField() {
         log.info("UNIQUE CONSTRAINTS FOR SUBJECT: semester, ukrName, specialtyId");
         log.info("SAVED SUBJECT: semester - {}, ukrName - {}, specialtyId - {}",
-                subject.getSemester(), subject.getUkrName(), specialty.getId());
+                subject.getSemester(), subject.getUkrName(), subject.getSpecialty().getId());
 
         Subject subject1 = new Subject();
         subject1.setSemester(1);
@@ -158,9 +145,11 @@ public class TestSubjectService {
         subject1.setSpecialty(specialty);
 
         log.info("NEW SUBJECT: semester - {}, ukrName - {}, specialtyId - {}",
-                subject1.getSemester(), subject1.getUkrName(), subject1.getId());
+                subject1.getSemester(), subject1.getUkrName(), subject1.getSpecialty().getId());
 
         subjectService.save(subject1);
+
+        log.info("NEW SUBJECT WAS SAVED SUCCESSFULLY - {}", subjectRepository.findOne(subject1.getId()));
 
         assertNotNull(subjectRepository.findOne(subject.getId()));
         assertNotEquals(subject.getUkrName(), subject1.getUkrName());
