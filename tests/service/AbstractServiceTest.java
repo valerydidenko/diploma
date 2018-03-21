@@ -1,9 +1,17 @@
 package service;
 
 import diploma.config.AppConfig;
+import diploma.repository.*;
+import diploma.service.GradeService;
+import diploma.service.SubjectService;
+import diploma.service.impl.ExclusionServiceImpl;
+import diploma.service.impl.SpecialtyServiceImpl;
+import diploma.service.impl.StudentServiceImpl;
+import diploma.service.impl.UserServiceImpl;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +24,28 @@ import javax.persistence.PersistenceContext;
 @Transactional
 public abstract class AbstractServiceTest {
 
+    static final Logger log = LoggerFactory.getLogger(AbstractServiceTest.class);
+
     @PersistenceContext
     EntityManager entityManager;
 
-    static final Logger log = LoggerFactory.getLogger(AbstractServiceTest.class);
+    @Autowired
+    protected ExclusionRepository exclusionRepository;
+
+    @Autowired
+    protected SpecialtyRepository specialtyRepository;
+
+    @Autowired
+    protected StudentRepository studentRepository;
+
+    @Autowired
+    protected SubjectRepository subjectRepository;
+
+    @Autowired
+    protected UserRepository userRepository;
+
+    @Autowired
+    protected GradeRepository gradeRepository;
 
     public abstract void initEntities();
 

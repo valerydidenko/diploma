@@ -1,23 +1,19 @@
 package service;
 
 import diploma.entity.Exclusion;
-import diploma.repository.ExclusionRepository;
 import diploma.service.impl.ExclusionServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static diploma.utils.Util.generateExclusion;
+import static diploma.utils.EntitiesFactory.generateExclusion;
 import static org.junit.Assert.assertNull;
 
 public class TestExclusionService extends AbstractServiceTest {
 
     @Autowired
-    private ExclusionServiceImpl exclusionService;
-
-    @Autowired
-    private ExclusionRepository exclusionRepository;
+    protected ExclusionServiceImpl exclusionService;
 
     private Exclusion exclusion;
 

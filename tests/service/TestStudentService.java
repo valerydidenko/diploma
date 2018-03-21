@@ -2,7 +2,6 @@ package service;
 
 import diploma.entity.Student;
 import diploma.enums.DegreeEnum;
-import diploma.repository.StudentRepository;
 import diploma.service.impl.StudentServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,35 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
+import static diploma.utils.EntitiesFactory.generateStudent;
 import static org.junit.Assert.*;
 
 public class TestStudentService extends AbstractServiceTest {
 
     @Autowired
-    private StudentServiceImpl service;
-
-    @Autowired
-    private StudentRepository repository;
+    protected StudentServiceImpl studentService;
 
     private Student student;
 
     @Before
     public void initEntities() {
-        student = new Student();
-        student.setUsedeId(2341245L);
-        student.setUkrSurname("Васько");
-        student.setUkrName("Анастасія");
-        student.setUkrFatherName("Василівна");
-        student.setUkrCountry("Україна");
-        student.setEngSurname("Vasko");
-        student.setEngName("Anastasiia");
-        student.setEngFatherName("Vasilevna");
-        student.setEngCountry("Ukraine");
-        student.setDegree(DegreeEnum.Bachelor);
-        student.setDateOfBirth(new Date(838414800000L));
-        student.setGetIntoYear(2014);
-        student.setGraduateYear(2018);
-        repository.save(student);
+        student = generateStudent();
+        studentRepository.save(student);
     }
 
     @Test
@@ -58,17 +42,17 @@ public class TestStudentService extends AbstractServiceTest {
         student.setDateOfBirth(new Date(838314800000L));
         student.setGetIntoYear(2015);
         student.setGraduateYear(2019);
-        repository.save(student);
+        studentService.save(student);
 
-        Student updated = repository.getOne(student.getId());
+        Student updated = studentRepository.getOne(student.getId());
         assertNotNull(updated);
         assertEquals(student, updated);
     }
 
     @Test
     public void testDeleteEntity() {
-        service.delete(student);
-        assertNull(repository.findOne(student.getId()));
+        studentService.delete(student);
+        assertNull(studentRepository.findOne(student.getId()));
     }
 
 }

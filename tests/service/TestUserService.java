@@ -2,35 +2,25 @@ package service;
 
 import diploma.entity.User;
 import diploma.enums.RoleEnum;
-import diploma.repository.UserRepository;
 import diploma.service.impl.UserServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static diploma.utils.EntitiesFactory.generateUser;
 import static org.junit.Assert.*;
 
 public class TestUserService extends AbstractServiceTest {
 
     @Autowired
-    private UserServiceImpl service;
-
-    @Autowired
-    private UserRepository repository;
+    protected UserServiceImpl userService;
 
     private User user;
 
     @Before
     public void initEntities() {
-        user = new User();
-        user.setLogin("test_login");
-        user.setPassword("test_pass");
-        user.setUkrName("test_ukr_name");
-        user.setUkrSurname("test_ukr_surname");
-        user.setEngName("test_eng_name");
-        user.setEngSurname("test_eng_surname");
-        user.setRole(RoleEnum.USER);
-        repository.save(user);
+        user = generateUser();
+        userRepository.save(user);
     }
 
     @Test
@@ -44,16 +34,16 @@ public class TestUserService extends AbstractServiceTest {
         user.setEngName("upd_test_eng_name");
         user.setEngSurname("upd_test_eng_surname");
         user.setRole(RoleEnum.ADMIN);
-        service.save(user);
+        userService.save(user);
 
-        User updated = repository.findOne(user.getId());
+        User updated = userRepository.findOne(user.getId());
         assertNotNull(updated);
         assertEquals(user, updated);
     }
 
     @Test
     public void testDeleteEntity() {
-        service.delete(user);
-        assertNull(repository.findOne(user.getId()));
+        userService.delete(user);
+        assertNull(userRepository.findOne(user.getId()));
     }
 }

@@ -2,28 +2,20 @@ package service;
 
 import diploma.entity.Specialty;
 import diploma.entity.Subject;
-import diploma.repository.SpecialtyRepository;
-import diploma.repository.SubjectRepository;
 import diploma.service.SubjectService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import static diploma.utils.Util.generateSpecialty;
-import static diploma.utils.Util.generateSubject;
+import static diploma.utils.EntitiesFactory.generateSpecialty;
+import static diploma.utils.EntitiesFactory.generateSubject;
 import static org.junit.Assert.*;
 
 public class TestSubjectService extends AbstractServiceTest {
 
     @Autowired
-    private SubjectService subjectService;
-
-    @Autowired
-    private SubjectRepository subjectRepository;
-
-    @Autowired
-    private SpecialtyRepository specialtyRepository;
+    protected SubjectService subjectService;
 
     private Subject subject;
     private Specialty specialty;
