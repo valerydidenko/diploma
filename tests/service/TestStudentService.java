@@ -1,32 +1,25 @@
 package service;
 
-import diploma.config.AppConfig;
 import diploma.entity.Student;
 import diploma.enums.DegreeEnum;
 import diploma.repository.StudentRepository;
 import diploma.service.impl.StudentServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
 import static org.junit.Assert.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = AppConfig.class)
-@Transactional
-public class TestStudentService {
+public class TestStudentService extends AbstractServiceTest {
 
     @Autowired
     private StudentServiceImpl service;
 
     @Autowired
     private StudentRepository repository;
+
     private Student student;
 
     @Before
@@ -49,7 +42,9 @@ public class TestStudentService {
     }
 
     @Test
-    public void testUpdateStudent() {
+    public void testUpdateEntity() {
+        entityManager.detach(student);
+
         student.setUsedeId(2321245L);
         student.setUkrSurname("Васькоі");
         student.setUkrName("Анастасіяі");
@@ -71,8 +66,9 @@ public class TestStudentService {
     }
 
     @Test
-    public void testDeleteStudent() {
+    public void testDeleteEntity() {
         service.delete(student);
         assertNull(repository.findOne(student.getId()));
     }
+
 }

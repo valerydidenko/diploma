@@ -1,6 +1,5 @@
 package service;
 
-import diploma.config.AppConfig;
 import diploma.entity.Specialty;
 import diploma.entity.Subject;
 import diploma.repository.SpecialtyRepository;
@@ -8,31 +7,14 @@ import diploma.repository.SubjectRepository;
 import diploma.service.SubjectService;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import static diploma.utils.SpecialtyUtils.generateSpecialty;
-import static diploma.utils.SubjectUtils.generateSubject;
+import static diploma.utils.Util.generateSpecialty;
+import static diploma.utils.Util.generateSubject;
 import static org.junit.Assert.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = AppConfig.class)
-@Transactional
-public class TestSubjectService {
-
-    private static final Logger log = LoggerFactory.getLogger(TestSubjectService.class);
-
-    @PersistenceContext
-    private EntityManager entityManager;
+public class TestSubjectService extends AbstractServiceTest {
 
     @Autowired
     private SubjectService subjectService;
@@ -47,7 +29,7 @@ public class TestSubjectService {
     private Specialty specialty;
 
     @Before
-    public void initEntitities() {
+    public void initEntities() {
         specialty = generateSpecialty();
 
         log.info("GENERATE SPECIALTY - {}", specialty);
@@ -65,7 +47,7 @@ public class TestSubjectService {
     }
 
     @Test
-    public void testUpdateSubject() {
+    public void testUpdateEntity() {
         log.info("CHECK PERSISTENCE AFTER SAVE");
         log.info("SUBJECT PERSIST - {}", entityManager.contains(subject));
         log.info("DETACH SUBJECT");
@@ -95,7 +77,7 @@ public class TestSubjectService {
     }
 
     @Test
-    public void testDeleteSubject() {
+    public void testDeleteEntity() {
         log.info("SUBJECT FOR DELETE - {}", subject);
 
         subjectService.delete(subject);

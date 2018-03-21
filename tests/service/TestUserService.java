@@ -1,30 +1,23 @@
 package service;
 
-import diploma.config.AppConfig;
 import diploma.entity.User;
 import diploma.enums.RoleEnum;
 import diploma.repository.UserRepository;
 import diploma.service.impl.UserServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = AppConfig.class)
-@Transactional
-public class TestUserService {
+public class TestUserService extends AbstractServiceTest {
 
     @Autowired
     private UserServiceImpl service;
 
     @Autowired
     private UserRepository repository;
+
     private User user;
 
     @Before
@@ -41,7 +34,9 @@ public class TestUserService {
     }
 
     @Test
-    public void testUpdateUser() {
+    public void testUpdateEntity() {
+        entityManager.detach(user);
+
         user.setLogin("upd_test_login");
         user.setPassword("upd_test_pass");
         user.setUkrName("upd_test_ukr_name");
@@ -57,7 +52,7 @@ public class TestUserService {
     }
 
     @Test
-    public void testDeleteUser() {
+    public void testDeleteEntity() {
         service.delete(user);
         assertNull(repository.findOne(user.getId()));
     }

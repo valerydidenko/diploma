@@ -1,6 +1,5 @@
 package service;
 
-import diploma.config.AppConfig;
 import diploma.entity.Specialty;
 import diploma.entity.Subject;
 import diploma.repository.SpecialtyRepository;
@@ -8,31 +7,14 @@ import diploma.repository.SubjectRepository;
 import diploma.service.impl.SpecialtyServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import static diploma.utils.SpecialtyUtils.generateSpecialty;
-import static diploma.utils.SubjectUtils.generateSetOfSubjects;
+import static diploma.utils.Util.generateSetOfSubjects;
+import static diploma.utils.Util.generateSpecialty;
 import static org.junit.Assert.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = AppConfig.class)
-@Transactional
-public class TestSpecialtyService {
-
-    private static final Logger log = LoggerFactory.getLogger(TestSpecialtyService.class);
-
-    @PersistenceContext
-    private EntityManager entityManager;
+public class TestSpecialtyService extends AbstractServiceTest {
 
     @Autowired
     private SpecialtyServiceImpl specialtyService;
@@ -64,7 +46,7 @@ public class TestSpecialtyService {
     }
 
     @Test
-    public void testUpdateSpecialty() {
+    public void testUpdateEntity() {
         log.info("CHECK PERSISTENCE AFTER SAVE");
         log.info("SPECIALTY PERSIST - {}", entityManager.contains(specialty));
         log.info("DETACH SPECIALTY");
@@ -96,7 +78,7 @@ public class TestSpecialtyService {
     }
 
     @Test
-    public void testDeleteSpecialty() {
+    public void testDeleteEntity() {
         log.info("SPECIALTY FOR DELETE - {}", specialty);
 
         specialtyService.delete(specialty);

@@ -1,35 +1,17 @@
 package service;
 
-import diploma.config.AppConfig;
 import diploma.entity.Exclusion;
 import diploma.repository.ExclusionRepository;
 import diploma.service.impl.ExclusionServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import static diploma.utils.Util.generateExclusion;
 import static org.junit.Assert.assertNull;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = AppConfig.class)
-@Transactional
-public class TestExclusionService {
-
-    private static final Logger log = LoggerFactory.getLogger(TestExclusionService.class);
-
-    @PersistenceContext
-    private EntityManager entityManager;
+public class TestExclusionService extends AbstractServiceTest {
 
     @Autowired
     private ExclusionServiceImpl exclusionService;
@@ -51,7 +33,7 @@ public class TestExclusionService {
     }
 
     @Test
-    public void testUpdateExclusion() {
+    public void testUpdateEntity() {
         entityManager.detach(exclusion);
 
         exclusion.setUkrReason("Обновленная причина");
@@ -64,8 +46,9 @@ public class TestExclusionService {
     }
 
     @Test
-    public void testDeleteExclusion() {
+    public void testDeleteEntity() {
         exclusionService.delete(exclusion);
         assertNull(exclusionRepository.findOne(exclusion.getId()));
     }
+
 }
