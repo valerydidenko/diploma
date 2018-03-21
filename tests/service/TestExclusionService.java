@@ -13,7 +13,7 @@ import static org.junit.Assert.assertNull;
 public class TestExclusionService extends AbstractServiceTest {
 
     @Autowired
-    protected ExclusionServiceImpl exclusionService;
+    private ExclusionServiceImpl exclusionService;
 
     private Exclusion exclusion;
 

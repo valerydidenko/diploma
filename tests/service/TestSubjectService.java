@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class TestSubjectService extends AbstractServiceTest {
 
     @Autowired
-    protected SubjectService subjectService;
+    private SubjectService subjectService;
 
     private Subject subject;
     private Specialty specialty;

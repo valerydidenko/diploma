@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class TestUserService extends AbstractServiceTest {
 
     @Autowired
-    protected UserServiceImpl userService;
+    private UserServiceImpl userService;
 
     private User user;
 

@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 public class TestGradeService extends AbstractServiceTest {
 
     @Autowired
-    protected GradeService gradeService;
+    private GradeService gradeService;
 
     private Grade grade;
     private Student student;
