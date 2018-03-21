@@ -2,12 +2,6 @@ package service;
 
 import diploma.config.AppConfig;
 import diploma.repository.*;
-import diploma.service.GradeService;
-import diploma.service.SubjectService;
-import diploma.service.impl.ExclusionServiceImpl;
-import diploma.service.impl.SpecialtyServiceImpl;
-import diploma.service.impl.StudentServiceImpl;
-import diploma.service.impl.UserServiceImpl;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +40,9 @@ public abstract class AbstractServiceTest {
 
     @Autowired
     protected GradeRepository gradeRepository;
+
+    @Autowired
+    protected PositionRepository positionRepository;
 
     public abstract void initEntities();
 

@@ -3,6 +3,8 @@ package diploma.utils;
 import diploma.entity.*;
 import diploma.entity.embeddableIds.GradePrimaryKey;
 import diploma.enums.DegreeEnum;
+import diploma.enums.PositionEnum;
+import diploma.enums.PositionTypeEnum;
 import diploma.enums.RoleEnum;
 
 import java.util.Date;
@@ -91,5 +93,12 @@ public class EntitiesFactory {
         grade.setOnpuGrade(90);
         grade.setEuroGrade("A");
         return grade;
+    }
+
+    public static Position generatePosition() {
+        Position position = new Position();
+        position.setPosition(PositionEnum.DEAN);
+        position.setPositionType(PositionTypeEnum.ONPU);
+        return position;
     }
 }
