@@ -1,11 +1,23 @@
 package diploma.utils;
 
+import diploma.entity.Exclusion;
+import diploma.entity.Specialty;
 import diploma.entity.Subject;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class SubjectUtils {
+public class Util {
+
+    public static Specialty generateSpecialty() {
+        Specialty specialty = new Specialty();
+        specialty.setUkrName("Тест комп науки");
+        specialty.setUkrSpecialization("Тест информ системы");
+        specialty.setEngName("Test comp science");
+        specialty.setEngSpecialization("Test inform systems");
+        specialty.setYear(2007);
+        return specialty;
+    }
 
     public static Subject generateSubject() {
         Subject subject = new Subject();
@@ -32,4 +44,10 @@ public class SubjectUtils {
         return subjects;
     }
 
+    public static Exclusion generateExclusion() {
+        Exclusion exclusion = new Exclusion();
+        exclusion.setUkrReason("Первая причина");
+        exclusion.setEngReason("First reason");
+        return exclusion;
+    }
 }
