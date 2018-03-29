@@ -3,7 +3,7 @@ package service;
 import diploma.entity.Position;
 import diploma.enums.PositionEnum;
 import diploma.enums.PositionTypeEnum;
-import diploma.service.impl.PositionServiceImpl;
+import diploma.service.CrudService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class TestPositionService extends AbstractServiceTest {
 
     @Autowired
-    private PositionServiceImpl positionService;
+    private CrudService<Position> service;
 
     private Position position;
 
@@ -35,7 +35,7 @@ public class TestPositionService extends AbstractServiceTest {
         Position updated = positionRepository.findOne(position.getId());
         assertNotEquals(position, updated);
 
-        positionService.save(position);
+        service.save(position);
 
         updated = positionRepository.findOne(position.getId());
         assertNotNull(updated);
@@ -44,12 +44,12 @@ public class TestPositionService extends AbstractServiceTest {
 
     @Test
     public void testDeleteEntity() {
-        positionService.delete(position);
+        service.delete(position);
         assertNull(positionRepository.findOne(position.getId()));
     }
 
     @Test(expected = DataIntegrityViolationException.class)
     public void testSavePositionViolateUniqueConstraint() {
-        positionService.save(generatePosition());
+        service.save(generatePosition());
     }
 }

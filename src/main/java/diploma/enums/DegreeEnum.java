@@ -1,5 +1,5 @@
 package diploma.enums;
 
 public enum DegreeEnum {
-    Bachelor, Specialist, Master
+    BACHELOR, SPECIALIST, MASTER
 }

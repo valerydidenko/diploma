@@ -1,5 +1,6 @@
 package diploma.entity;
 
+import diploma.entity.abstractions.AbstractEntity;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -7,16 +8,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "subjects")
-public class Subject implements Serializable {
+public class Subject extends AbstractEntity {
 
     private static final long serialVersionUID = -1479667432527336018L;
 
-    private Long id;
     private int semester;
     private String ukrName;
     private String engName;
@@ -66,17 +65,6 @@ public class Subject implements Serializable {
                 ", credit=" + credit +
                 ", specialtyId=" + specialty.getId() +
                 '}';
-    }
-
-    @Id
-    @GeneratedValue
-    @Column(name = "subject_id")
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @Column(nullable = false)
@@ -131,7 +119,7 @@ public class Subject implements Serializable {
         this.credit = credit;
     }
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "specialty_id")
     @Cascade({CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
     public Specialty getSpecialty() {
@@ -139,6 +127,6 @@ public class Subject implements Serializable {
     }
 
     public void setSpecialty(Specialty specialty) {
-    	this.specialty = specialty;
+        this.specialty = specialty;
     }
 }

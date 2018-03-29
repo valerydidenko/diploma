@@ -2,7 +2,7 @@ package service;
 
 import diploma.entity.Specialty;
 import diploma.entity.Subject;
-import diploma.service.SubjectService;
+import diploma.service.impl.SubjectServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class TestSubjectService extends AbstractServiceTest {
 
     @Autowired
-    private SubjectService subjectService;
+    private SubjectServiceImpl service;
 
     private Subject subject;
     private Specialty specialty;
@@ -59,7 +59,7 @@ public class TestSubjectService extends AbstractServiceTest {
         log.info("SUBJECT FROM DB - {}", subjectRepository.findOne(subject.getId()));
         log.info("APPLY CHANGES");
 
-        subjectService.save(subject);
+        service.save(subject);
 
         Subject updated = subjectRepository.findOne(subject.getId());
 
@@ -72,7 +72,7 @@ public class TestSubjectService extends AbstractServiceTest {
     public void testDeleteEntity() {
         log.info("SUBJECT FOR DELETE - {}", subject);
 
-        subjectService.delete(subject);
+        service.delete(subject);
 
         log.info("SUBJECT WAS DELETED");
         log.info("FIND ONE SUBJECT BY ID {} - {}", subject.getId(), subjectRepository.findOne(subject.getId()));
@@ -101,7 +101,7 @@ public class TestSubjectService extends AbstractServiceTest {
         log.info("NEW SUBJECT: semester - {}, ukrName - {}, specialtyId - {}",
                 subject1.getSemester(), subject1.getUkrName(), subject1.getSpecialty().getId());
 
-        subjectService.save(subject1);
+        service.save(subject1);
     }
 
     @Test
@@ -121,7 +121,7 @@ public class TestSubjectService extends AbstractServiceTest {
         log.info("NEW SUBJECT: semester - {}, ukrName - {}, specialtyId - {}",
                 subject1.getSemester(), subject1.getUkrName(), subject1.getSpecialty().getId());
 
-        subjectService.save(subject1);
+        service.save(subject1);
 
         log.info("NEW SUBJECT WAS SAVED SUCCESSFULLY - {}", subjectRepository.findOne(subject1.getId()));
 

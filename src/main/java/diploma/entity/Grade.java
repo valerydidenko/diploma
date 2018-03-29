@@ -1,31 +1,29 @@
 package diploma.entity;
 
-import diploma.entity.embeddableIds.GradePrimaryKey;
+import diploma.entity.abstractions.AbstractEntity;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "grades")
-public class Grade implements Serializable {
+public class Grade extends AbstractEntity {
 
     private static final long serialVersionUID = 8348969852028945954L;
 
-    private GradePrimaryKey id;
+    private Student student;
+    private Subject subject;
     private int onpuGrade;
     private String euroGrade;
 
     public Grade() {
     }
 
-    public Grade(GradePrimaryKey id, int onpuGrade, String euroGrade) {
-        this.id = id;
+    public Grade(Student student, Subject subject, int onpuGrade, String euroGrade) {
+        this.student = student;
+        this.subject = subject;
         this.onpuGrade = onpuGrade;
         this.euroGrade = euroGrade;
     }
@@ -35,33 +33,44 @@ public class Grade implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Grade grade = (Grade) o;
-        return onpuGrade == grade.onpuGrade &&
-                Objects.equals(id, grade.id) &&
-                Objects.equals(euroGrade, grade.euroGrade);
+        return Objects.equals(student, grade.student) &&
+                Objects.equals(subject, grade.subject);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id, onpuGrade, euroGrade);
+        return Objects.hash(student, subject);
     }
 
     @Override
     public String toString() {
         return "Grade{" +
                 "id=" + id +
+                ", student[id]=" + student.getId() +
+                ", subject[id]=" + subject.getId() +
                 ", onpuGrade=" + onpuGrade +
                 ", euroGrade='" + euroGrade + '\'' +
                 '}';
     }
 
-    @EmbeddedId
-    public GradePrimaryKey getId() {
-        return id;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "student_id")
+    public Student getStudent() {
+        return student;
     }
 
-    public void setId(GradePrimaryKey id) {
-        this.id = id;
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "subject_id")
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 
     @Column(name = "onpu_grade", nullable = false)

@@ -7,7 +7,7 @@
 
     <changeSet id="create_table_users" author="vdidenko">
         <createTable tableName="users">
-            <column name="user_id" type="bigint(11)" autoIncrement="true">
+            <column name="id" type="bigint(11)" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="login" type="varchar(60)">
@@ -37,7 +37,7 @@
     </changeSet>
     <changeSet id="create_table_students" author="vdidenko">
         <createTable tableName="students">
-            <column name="student_id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="usede_id" type="bigint">
@@ -79,7 +79,7 @@
     </changeSet>
     <changeSet id="create_table_specialties" author="vdidenko">
         <createTable tableName="specialties">
-            <column name="specialty_id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="ukr_name" type="varchar(150)">
@@ -105,7 +105,7 @@
     </changeSet>
     <changeSet id="create_table_subjects" author="vdidenko">
         <createTable tableName="subjects">
-            <column name="subject_id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="semester" type="int">
@@ -135,12 +135,12 @@
     <changeSet id="add_fk_subjects_table" author="vdidenko">
         <addForeignKeyConstraint constraintName="fk_subjects_specialties"
                                  baseTableName="subjects" baseColumnNames="specialty_id"
-                                 referencedTableName="specialties" referencedColumnNames="specialty_id"
+                                 referencedTableName="specialties" referencedColumnNames="id"
                                  onDelete="CASCADE" onUpdate="CASCADE"/>
     </changeSet>
     <changeSet id="create_table_exclusions" author="vdidenko">
         <createTable tableName="exclusions">
-            <column name="exclusion_id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="ukr_reason" type="varchar(1000)">
@@ -153,11 +153,14 @@
     </changeSet>
     <changeSet id="create_table_grades" author="vdidenko">
         <createTable tableName="grades">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
             <column name="student_id" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
+                <constraints nullable="false"/>
             </column>
             <column name="subject_id" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
+                <constraints nullable="false"/>
             </column>
             <column name="onpu_grade" type="int">
                 <constraints nullable="false"/>
@@ -170,16 +173,20 @@
     <changeSet id="add_fk_grades_table" author="vdidenko">
         <addForeignKeyConstraint constraintName="fk_grades_students"
                                  baseTableName="grades" baseColumnNames="student_id"
-                                 referencedTableName="students" referencedColumnNames="student_id"
+                                 referencedTableName="students" referencedColumnNames="id"
                                  onDelete="CASCADE" onUpdate="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_grades_subjects"
                                  baseTableName="grades" baseColumnNames="subject_id"
-                                 referencedTableName="subjects" referencedColumnNames="subject_id"
+                                 referencedTableName="subjects" referencedColumnNames="id"
                                  onDelete="CASCADE" onUpdate="CASCADE"/>
+    </changeSet>
+    <changeSet id="add_unique_constraint_grades_table" author="vdidenko">
+        <addUniqueConstraint constraintName="unique_grade"
+                             tableName="grades" columnNames="student_id, subject_id"/>
     </changeSet>
     <changeSet id="create_table_positions" author="vdidenko">
         <createTable tableName="positions">
-            <column name="position_id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="position_type" type="varchar(60)">
@@ -196,7 +203,7 @@
     </changeSet>
     <changeSet id="create_table_signs" author="vdidenko">
         <createTable tableName="signs">
-            <column name="sign_id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="ukr_surname" type="varchar(60)">
@@ -221,12 +228,12 @@
     <changeSet id="add_fk_signs_table" author="vdidenko">
         <addForeignKeyConstraint constraintName="fk_signs_positions"
                                  baseTableName="signs" baseColumnNames="position_id"
-                                 referencedTableName="positions" referencedColumnNames="position_id"
+                                 referencedTableName="positions" referencedColumnNames="id"
                                  onDelete="RESTRICT" onUpdate="CASCADE"/>
     </changeSet>
     <changeSet id="create_table_references" author="vdidenko">
         <createTable tableName="references">
-            <column name="reference_id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="number" type="bigint">
@@ -258,19 +265,19 @@
     <changeSet id="add_fk_references_table" author="vdidenko">
         <addForeignKeyConstraint constraintName="fk_references_students"
                                  baseTableName="references" baseColumnNames="student_id"
-                                 referencedTableName="students" referencedColumnNames="student_id"
+                                 referencedTableName="students" referencedColumnNames="id"
                                  onDelete="RESTRICT" onUpdate="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_references_specialties"
                                  baseTableName="references" baseColumnNames="specialty_id"
-                                 referencedTableName="specialties" referencedColumnNames="specialty_id"
+                                 referencedTableName="specialties" referencedColumnNames="id"
                                  onDelete="RESTRICT" onUpdate="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_references_exclusions"
                                  baseTableName="references" baseColumnNames="exclusion_id"
-                                 referencedTableName="exclusions" referencedColumnNames="exclusion_id"
+                                 referencedTableName="exclusions" referencedColumnNames="id"
                                  onDelete="RESTRICT" onUpdate="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_references_users"
                                  baseTableName="references" baseColumnNames="user_id"
-                                 referencedTableName="users" referencedColumnNames="user_id"
+                                 referencedTableName="users" referencedColumnNames="id"
                                  onDelete="RESTRICT" onUpdate="CASCADE"/>
     </changeSet>
     <changeSet id="create_table_for_many2many_signs_references" author="vdidenko">
@@ -286,11 +293,11 @@
     <changeSet id="add_fk_signs_references_table" author="vdidenko">
         <addForeignKeyConstraint constraintName="fk_signs_references_signs"
                                  baseTableName="signs_references" baseColumnNames="sign_id"
-                                 referencedTableName="signs" referencedColumnNames="sign_id"
+                                 referencedTableName="signs" referencedColumnNames="id"
                                  onDelete="RESTRICT" onUpdate="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_signs_references_references"
                                  baseTableName="signs_references" baseColumnNames="reference_id"
-                                 referencedTableName="references" referencedColumnNames="reference_id"
+                                 referencedTableName="references" referencedColumnNames="id"
                                  onDelete="RESTRICT" onUpdate="CASCADE"/>
     </changeSet>
     <changeSet id="insert_test_data" author="vdidenko">

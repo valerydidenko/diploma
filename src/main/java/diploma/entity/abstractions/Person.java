@@ -1,14 +1,13 @@
-package diploma.entity;
+package diploma.entity.abstractions;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import java.io.Serializable;
 import java.util.Objects;
 
 @MappedSuperclass
-public abstract class Person implements Serializable {
+public abstract class Person extends AbstractEntity {
 
     private String ukrSurname;
     private String ukrName;
@@ -17,11 +16,11 @@ public abstract class Person implements Serializable {
     private String engName;
     private String engFatherName;
 
-    Person() {
+    protected Person() {
     }
 
-    Person(String ukrSurname, String ukrName, String ukrFatherName,
-           String engSurname, String engName, String engFatherName) {
+    protected Person(String ukrSurname, String ukrName, String ukrFatherName,
+                     String engSurname, String engName, String engFatherName) {
         this.ukrSurname = ukrSurname;
         this.ukrName = ukrName;
         this.ukrFatherName = ukrFatherName;

@@ -5,8 +5,8 @@ import diploma.entity.Subject;
 
 import java.util.List;
 
-public interface SubjectService extends BaseService<Subject> {
+public interface SubjectService extends CrudService<Subject> {
 
-    List<Subject> getSubjectsBySpecialty(Specialty specialty);
+    List<Subject> getAllBySpecialty(Specialty specialty);
 
 }

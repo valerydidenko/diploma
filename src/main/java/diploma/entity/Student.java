@@ -1,5 +1,6 @@
 package diploma.entity;
 
+import diploma.entity.abstractions.Person;
 import diploma.enums.DegreeEnum;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -14,7 +15,6 @@ public class Student extends Person {
 
     private static final long serialVersionUID = -1444535150512840093L;
 
-    private Long id;
     private Long usedeId;
     private String ukrCountry;
     private String engCountry;
@@ -74,17 +74,6 @@ public class Student extends Person {
                 ", getIntoYear=" + getIntoYear +
                 ", graduateYear=" + graduateYear +
                 '}';
-    }
-
-    @Id
-    @GeneratedValue
-    @Column(name = "student_id")
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @Column(name = "usede_id", nullable = false, unique = true)

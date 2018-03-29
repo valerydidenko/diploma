@@ -14,7 +14,7 @@ public class AppConfig {
     @Bean
     public DataSource dataSource() {
         DataSourceBuilder builder = DataSourceBuilder.create();
-        builder.url("jdbc:mysql://localhost:3306/diploma?useSSL=false");
+        builder.url("jdbc:mysql://localhost:3306/diploma?createDatabaseIfNotExist=true");
         builder.username("root");
         builder.password("root");
         return builder.build();

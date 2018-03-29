@@ -1,7 +1,7 @@
 package service;
 
 import diploma.entity.Exclusion;
-import diploma.service.impl.ExclusionServiceImpl;
+import diploma.service.ExclusionService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import static org.junit.Assert.assertNull;
 public class TestExclusionService extends AbstractServiceTest {
 
     @Autowired
-    private ExclusionServiceImpl exclusionService;
+    private ExclusionService exclusionService;
 
     private Exclusion exclusion;
 

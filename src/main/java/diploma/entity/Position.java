@@ -1,19 +1,18 @@
 package diploma.entity;
 
+import diploma.entity.abstractions.AbstractEntity;
 import diploma.enums.PositionEnum;
 import diploma.enums.PositionTypeEnum;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "positions")
-public class Position implements Serializable {
+public class Position extends AbstractEntity {
 
     private static final long serialVersionUID = -257647851008130698L;
 
-    private Long id;
     private PositionTypeEnum positionType;
     private PositionEnum position;
 
@@ -46,17 +45,6 @@ public class Position implements Serializable {
                 ", positionType=" + positionType +
                 ", position=" + position +
                 '}';
-    }
-
-    @Id
-    @GeneratedValue
-    @Column(name = "position_id")
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @Column(name = "position_type", nullable = false)

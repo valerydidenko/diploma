@@ -1,5 +1,6 @@
 package diploma.entity;
 
+import diploma.entity.abstractions.Person;
 import diploma.enums.RoleEnum;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -13,7 +14,6 @@ public class User extends Person {
 
     private static final long serialVersionUID = -4783644335006899959L;
 
-    private Long id;
     private String login;
     private String password;
     private RoleEnum role;
@@ -53,17 +53,6 @@ public class User extends Person {
                 ", password='" + password + '\'' +
                 ", role=" + role +
                 '}';
-    }
-
-    @Id
-    @GeneratedValue
-    @Column(name = "user_id")
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @Column(nullable = false)

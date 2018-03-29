@@ -2,7 +2,7 @@ package service;
 
 import diploma.entity.Student;
 import diploma.enums.DegreeEnum;
-import diploma.service.impl.StudentServiceImpl;
+import diploma.service.StudentService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class TestStudentService extends AbstractServiceTest {
 
     @Autowired
-    private StudentServiceImpl studentService;
+    private StudentService service;
 
     private Student student;
 
@@ -38,11 +38,11 @@ public class TestStudentService extends AbstractServiceTest {
         student.setEngName("Anastasiias");
         student.setEngFatherName("Vasilevnas");
         student.setEngCountry("Ukraines");
-        student.setDegree(DegreeEnum.Specialist);
+        student.setDegree(DegreeEnum.SPECIALIST);
         student.setDateOfBirth(new Date(838314800000L));
         student.setGetIntoYear(2015);
         student.setGraduateYear(2019);
-        studentService.save(student);
+        service.save(student);
 
         Student updated = studentRepository.getOne(student.getId());
         assertNotNull(updated);
@@ -51,7 +51,7 @@ public class TestStudentService extends AbstractServiceTest {
 
     @Test
     public void testDeleteEntity() {
-        studentService.delete(student);
+        service.delete(student);
         assertNull(studentRepository.findOne(student.getId()));
     }
 

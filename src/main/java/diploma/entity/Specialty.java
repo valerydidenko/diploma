@@ -1,23 +1,25 @@
 package diploma.entity;
 
+import diploma.entity.abstractions.AbstractEntity;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "specialties")
-public class Specialty implements Serializable {
+public class Specialty extends AbstractEntity {
 
     private static final long serialVersionUID = -1265002214837795680L;
 
-    private Long id;
     private String ukrName;
     private String engName;
     private String ukrSpecialization;
@@ -26,7 +28,7 @@ public class Specialty implements Serializable {
     private Set<Subject> subjects;
 
     public Specialty() {
-    	this.subjects = new HashSet<>();
+        this.subjects = new HashSet<>();
     }
 
     public Specialty(String ukrName, String engName, String ukrSpecialization,
@@ -36,7 +38,7 @@ public class Specialty implements Serializable {
         this.ukrSpecialization = ukrSpecialization;
         this.engSpecialization = engSpecialization;
         this.year = year;
-	    this.subjects = new HashSet<>();
+        this.subjects = new HashSet<>();
     }
 
     @Override
@@ -66,17 +68,6 @@ public class Specialty implements Serializable {
                 ", engSpecialization='" + engSpecialization + '\'' +
                 ", year=" + year +
                 '}';
-    }
-
-    @Id
-    @GeneratedValue
-    @Column(name = "specialty_id")
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @Column(name = "ukr_name", nullable = false, length = 150)
@@ -140,6 +131,6 @@ public class Specialty implements Serializable {
     }
 
     public void addSubject(Subject subject) {
-		this.subjects.add(subject);
+        this.subjects.add(subject);
     }
 }

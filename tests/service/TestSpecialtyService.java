@@ -2,7 +2,7 @@ package service;
 
 import diploma.entity.Specialty;
 import diploma.entity.Subject;
-import diploma.service.impl.SpecialtyServiceImpl;
+import diploma.service.CrudService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class TestSpecialtyService extends AbstractServiceTest {
 
     @Autowired
-    private SpecialtyServiceImpl specialtyService;
+    private CrudService<Specialty> service;
 
     private Specialty specialty;
 
@@ -57,7 +57,7 @@ public class TestSpecialtyService extends AbstractServiceTest {
         log.info("SPECIALTY FROM DB - {}", specialtyRepository.findOne(specialty.getId()));
         log.info("APPLY CHANGES");
 
-        specialtyService.save(specialty);
+        service.save(specialty);
 
         Specialty updated = specialtyRepository.findOne(specialty.getId());
 
@@ -73,7 +73,7 @@ public class TestSpecialtyService extends AbstractServiceTest {
     public void testDeleteEntity() {
         log.info("SPECIALTY FOR DELETE - {}", specialty);
 
-        specialtyService.delete(specialty);
+        service.delete(specialty);
 
         log.info("SPECIALTY WAS DELETED");
         log.info("FIND ONE SPECIALTY BY ID {} - {}", specialty.getId(), specialtyRepository.findOne(specialty.getId()));
@@ -99,7 +99,7 @@ public class TestSpecialtyService extends AbstractServiceTest {
         log.info("NEW specialty: ukrName - {}, ukrSpecialization - {}, year - {}\n",
                 specialty1.getUkrName(), specialty1.getUkrSpecialization(), specialty1.getYear());
 
-        specialtyService.save(specialty1);
+        service.save(specialty1);
     }
 
     @Test
@@ -118,7 +118,7 @@ public class TestSpecialtyService extends AbstractServiceTest {
         log.info("NEW specialty: ukrName - {}, ukrSpecialization - {}, year - {}",
                 specialty1.getUkrName(), specialty1.getUkrSpecialization(), specialty1.getYear());
 
-        specialtyService.save(specialty1);
+        service.save(specialty1);
 
         log.info("NEW SPECIALTY WAS SAVED SUCCESSFULLY - {}", specialtyRepository.findOne(specialty1.getId()));
 

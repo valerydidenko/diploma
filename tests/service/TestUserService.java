@@ -2,7 +2,7 @@ package service;
 
 import diploma.entity.User;
 import diploma.enums.RoleEnum;
-import diploma.service.impl.UserServiceImpl;
+import diploma.service.CrudService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class TestUserService extends AbstractServiceTest {
 
     @Autowired
-    private UserServiceImpl userService;
+    private CrudService<User> service;
 
     private User user;
 
@@ -34,7 +34,7 @@ public class TestUserService extends AbstractServiceTest {
         user.setEngName("upd_test_eng_name");
         user.setEngSurname("upd_test_eng_surname");
         user.setRole(RoleEnum.ADMIN);
-        userService.save(user);
+        service.save(user);
 
         User updated = userRepository.findOne(user.getId());
         assertNotNull(updated);
@@ -43,7 +43,7 @@ public class TestUserService extends AbstractServiceTest {
 
     @Test
     public void testDeleteEntity() {
-        userService.delete(user);
+        service.delete(user);
         assertNull(userRepository.findOne(user.getId()));
     }
 }

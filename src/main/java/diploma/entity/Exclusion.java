@@ -1,18 +1,19 @@
 package diploma.entity;
 
+import diploma.entity.abstractions.AbstractEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
 @Table(name = "exclusions")
-public class Exclusion implements Serializable{
+public class Exclusion extends AbstractEntity {
 
     private static final long serialVersionUID = -1444535150512840093L;
 
-    private Long id;
     private String ukrReason;
     private String engReason;
 
@@ -45,17 +46,6 @@ public class Exclusion implements Serializable{
                 ", ukrReason='" + ukrReason + '\'' +
                 ", engReason='" + engReason + '\'' +
                 '}';
-    }
-
-    @Id
-    @GeneratedValue
-    @Column(name = "exclusion_id")
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @Column(name = "ukr_reason", nullable = false, length = 1000)

@@ -21,7 +21,7 @@ public abstract class AbstractServiceTest {
     static final Logger log = LoggerFactory.getLogger(AbstractServiceTest.class);
 
     @PersistenceContext
-    EntityManager entityManager;
+    protected EntityManager entityManager;
 
     @Autowired
     protected ExclusionRepository exclusionRepository;

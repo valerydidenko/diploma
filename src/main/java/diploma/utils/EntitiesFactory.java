@@ -1,7 +1,6 @@
 package diploma.utils;
 
 import diploma.entity.*;
-import diploma.entity.embeddableIds.GradePrimaryKey;
 import diploma.enums.DegreeEnum;
 import diploma.enums.PositionEnum;
 import diploma.enums.PositionTypeEnum;
@@ -78,7 +77,7 @@ public class EntitiesFactory {
         student.setEngName("Anastasiia");
         student.setEngFatherName("Vasilevna");
         student.setEngCountry("Ukraine");
-        student.setDegree(DegreeEnum.Bachelor);
+        student.setDegree(DegreeEnum.BACHELOR);
         student.setDateOfBirth(new Date(838414800000L));
         student.setGetIntoYear(2014);
         student.setGraduateYear(2018);
@@ -86,10 +85,9 @@ public class EntitiesFactory {
     }
 
     public static Grade generateGrade(Student student, Subject subject) {
-        GradePrimaryKey primaryKey = new GradePrimaryKey(student.getId(), subject.getId());
-
         Grade grade = new Grade();
-        grade.setId(primaryKey);
+        grade.setStudent(student);
+        grade.setSubject(subject);
         grade.setOnpuGrade(90);
         grade.setEuroGrade("A");
         return grade;
