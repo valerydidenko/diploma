@@ -99,4 +99,15 @@ public class EntitiesFactory {
         position.setPositionType(PositionTypeEnum.ONPU);
         return position;
     }
+
+    public static Sign generateSign() {
+        Sign sign = new Sign();
+        sign.setUkrSurname("Васько");
+        sign.setUkrName("Анастасія");
+        sign.setUkrFatherName("Василівна");
+        sign.setEngSurname("Vasko");
+        sign.setEngName("Anastasiia");
+        sign.setEngFatherName("Vasilevna");
+        return sign;
+    }
 }

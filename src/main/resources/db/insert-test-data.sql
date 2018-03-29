@@ -74,14 +74,14 @@ INSERT IGNORE INTO grades (id, student_id, subject_id, onpu_grade, euro_grade) V
   (19, 2, 19, 100, 'A');
 
 INSERT IGNORE INTO positions (id, position_type, position_name) VALUES
-  (1, 'ICS', 'Director'),
-  (2, 'ICS', 'Director Interim'),
-  (3, 'ICS', 'Vice-Director'),
-  (4, 'ICS', 'Dean'),
-  (5, 'ICS', 'Vice Dean'),
-  (6, 'ONPU', 'Rector'),
-  (7, 'ONPU', 'Rector interim'),
-  (8, 'ONPU', 'Vice-Rector');
+  (1, 'ICS', 'DIRECTOR'),
+  (2, 'ICS', 'DIRECTOR_INTERIM'),
+  (3, 'ICS', 'VICE_DIRECTOR'),
+  (4, 'ICS', 'DEAN'),
+  (5, 'ICS', 'VICE_DEAN'),
+  (6, 'ONPU', 'RECTOR'),
+  (7, 'ONPU', 'RECTOR_INTERIM'),
+  (8, 'ONPU', 'VICE_RECTOR');
 
 INSERT IGNORE INTO signs (id, ukr_surname, ukr_name, ukr_father_name, eng_surname, eng_name, eng_father_name, position_id)
 VALUES

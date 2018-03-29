@@ -44,6 +44,9 @@ public abstract class AbstractServiceTest {
     @Autowired
     protected PositionRepository positionRepository;
 
+    @Autowired
+    protected SignRepository signRepository;
+
     public abstract void initEntities();
 
     public abstract void testUpdateEntity();
