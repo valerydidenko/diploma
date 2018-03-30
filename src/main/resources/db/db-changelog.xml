@@ -75,6 +75,9 @@
             <column name="graduate_year" type="int">
                 <constraints nullable="false"/>
             </column>
+            <column name="deducted" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
     <changeSet id="create_table_specialties" author="vdidenko">
@@ -233,7 +236,7 @@
     </changeSet>
     <changeSet id="create_table_references" author="vdidenko">
         <createTable tableName="references">
-            <column name="id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint">
                 <constraints primaryKey="true"/>
             </column>
             <column name="number" type="bigint">
@@ -246,9 +249,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="order_date" type="date">
-                <constraints nullable="false"/>
-            </column>
-            <column name="student_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="specialty_id" type="bigint">
@@ -264,7 +264,7 @@
     </changeSet>
     <changeSet id="add_fk_references_table" author="vdidenko">
         <addForeignKeyConstraint constraintName="fk_references_students"
-                                 baseTableName="references" baseColumnNames="student_id"
+                                 baseTableName="references" baseColumnNames="id"
                                  referencedTableName="students" referencedColumnNames="id"
                                  onDelete="RESTRICT" onUpdate="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_references_specialties"

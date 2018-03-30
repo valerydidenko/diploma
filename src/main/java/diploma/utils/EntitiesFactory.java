@@ -66,7 +66,7 @@ public class EntitiesFactory {
         return user;
     }
 
-    public static Student generateStudent() {
+    public static Student generateStudent(boolean deducted) {
         Student student = new Student();
         student.setUsedeId(2341245L);
         student.setUkrSurname("Васько");
@@ -81,6 +81,7 @@ public class EntitiesFactory {
         student.setDateOfBirth(new Date(838414800000L));
         student.setGetIntoYear(2014);
         student.setGraduateYear(2018);
+        student.setDeducted(deducted);
         return student;
     }
 

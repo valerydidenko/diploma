@@ -3,14 +3,14 @@ VALUES
   (1, 'admin', 'admin', 'Валерій', 'Діденко', 'Олександрович', 'Valery', 'Didenko', 'Alexandrovich', 'ADMIN'),
   (2, 'user', 'user', 'Микола', 'Іванов', 'Васильович', 'Nikolay', 'Ivanov', 'Vasilyovich', 'USER');
 
-INSERT IGNORE INTO students (id, usede_id, ukr_surname, ukr_name, ukr_father_name, ukr_country, eng_surname, eng_name, eng_father_name, eng_country, degree, date_of_birth, get_into_year, graduate_year)
+INSERT IGNORE INTO students (id, usede_id, ukr_surname, ukr_name, ukr_father_name, ukr_country, eng_surname, eng_name, eng_father_name, eng_country, degree, date_of_birth, get_into_year, graduate_year, deducted)
 VALUES
   (1, 7654321, 'Целковський', 'Олександр', 'Анатолійович', 'Україна', 'Tselkovsky', 'Oleksander', 'Anatoliyovich',
-      'Ukraine', 'BACHELOR', '1996-04-18', 2014, 2017),
+      'Ukraine', 'BACHELOR', '1996-04-18', 2014, 2017, FALSE),
   (2, 6132863, 'Куриленко', 'Аліна', 'Олегівна', 'Україна', 'Kurilenko', 'Alina', 'Olegivna', 'Ukraine', 'BACHELOR',
-   '1999-02-25', 2016, 2017),
+   '1999-02-25', 2016, 2017, FALSE),
   (3, 1234567, 'Ворошкевич', 'Ніка', 'Кирилівна', 'Україна', 'Voroshkevych', 'Nika', 'Kirilivna', 'Ukraine', 'BACHELOR',
-   '1996-07-27', 2014, 2017);
+   '1996-07-27', 2014, 2017, TRUE);
 
 INSERT IGNORE INTO specialties (id, ukr_name, eng_name, ukr_specialization, eng_specialization, year) VALUES
   (1, '123 - Комп\'ютерна інженерія', '123 - Computer engineering', 'Спеціалізовані комп\'ютерні системи',
@@ -89,9 +89,9 @@ VALUES
   (2, 'Нестеренко', 'Сергій', 'Андрійович', 'Nesterenko', 'Sergy', 'Andriyovich', 7),
   (3, 'Оборський', 'Валентин', 'Михайлович', 'Oborsky', 'Valentin', 'Mikhaylovich', 6);
 
-INSERT IGNORE INTO `references` (id, number, sign_date, `order`, order_date, student_id, specialty_id, exclusion_id, user_id)
+INSERT IGNORE INTO `references` (id, number, sign_date, `order`, order_date, specialty_id, exclusion_id, user_id)
 VALUES
-  (1, 602017, '2017-11-25', '№965-c', '2017-10-23', 2, 3, 1, 2);
+  (1, 602017, '2017-11-25', '№965-c', '2017-10-23', 3, 1, 2);
 
 INSERT IGNORE INTO signs_references (sign_id, reference_id) VALUES
   (1, 1), (2, 1);
