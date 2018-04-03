@@ -2,6 +2,8 @@ package diploma.entity;
 
 import diploma.entity.abstractions.Person;
 import diploma.enums.DegreeEnum;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -23,6 +25,7 @@ public class Student extends Person {
     private int getIntoYear;
     private int graduateYear;
 	private boolean deducted;
+	private Reference reference;
 
     public Student() {
     }
@@ -156,5 +159,15 @@ public class Student extends Person {
 
 	public void setDeducted(boolean deducted) {
 		this.deducted = deducted;
+	}
+
+	@OneToOne(mappedBy = "student")
+	@Cascade(CascadeType.ALL)
+	public Reference getReference() {
+		return reference;
+	}
+
+	public void setReference(Reference reference) {
+		this.reference = reference;
 	}
 }
