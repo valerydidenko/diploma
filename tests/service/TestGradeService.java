@@ -22,7 +22,7 @@ public class TestGradeService extends AbstractServiceTest {
 
     @Before
     public void initEntities() {
-        student = generateStudent();
+        student = generateStudent(false);
         subject = generateSubject();
         subject.setSpecialty(generateSpecialty());
         studentRepository.save(student);

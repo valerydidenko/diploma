@@ -21,7 +21,7 @@ public class TestStudentService extends AbstractServiceTest {
 
     @Before
     public void initEntities() {
-        student = generateStudent();
+        student = generateStudent(false);
         studentRepository.save(student);
     }
 

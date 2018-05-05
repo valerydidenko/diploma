@@ -2,6 +2,8 @@ package diploma.entity;
 
 import diploma.entity.abstractions.Person;
 import diploma.enums.DegreeEnum;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -22,6 +24,8 @@ public class Student extends Person {
     private Date dateOfBirth;
     private int getIntoYear;
     private int graduateYear;
+	private boolean deducted;
+	private Reference reference;
 
     public Student() {
     }
@@ -29,7 +33,8 @@ public class Student extends Person {
     public Student(Long id, Long usedeId, String ukrSurname, String ukrName,
                    String ukrFatherName, String ukrCountry, String engSurname,
                    String engName, String engFatherName, String engCountry,
-                   DegreeEnum degree, Date dateOfBirth, int getIntoYear, int graduateYear) {
+                   DegreeEnum degree, Date dateOfBirth, int getIntoYear,
+                   int graduateYear, boolean deducted) {
         super(ukrSurname, ukrName, ukrFatherName, engSurname, engName, engFatherName);
         this.id = id;
         this.usedeId = usedeId;
@@ -39,6 +44,7 @@ public class Student extends Person {
         this.dateOfBirth = dateOfBirth;
         this.getIntoYear = getIntoYear;
         this.graduateYear = graduateYear;
+	    this.deducted = deducted;
     }
 
     @Override
@@ -73,6 +79,7 @@ public class Student extends Person {
                 ", dateOfBirth=" + dateOfBirth +
                 ", getIntoYear=" + getIntoYear +
                 ", graduateYear=" + graduateYear +
+		        ", deducted=" + deducted +
                 '}';
     }
 
@@ -144,4 +151,23 @@ public class Student extends Person {
     public void setGraduateYear(int graduateYear) {
         this.graduateYear = graduateYear;
     }
+
+	@Column(name = "deducted", nullable = false)
+	public boolean isDeducted() {
+		return deducted;
+	}
+
+	public void setDeducted(boolean deducted) {
+		this.deducted = deducted;
+	}
+
+	@OneToOne(mappedBy = "student")
+	@Cascade(CascadeType.ALL)
+	public Reference getReference() {
+		return reference;
+	}
+
+	public void setReference(Reference reference) {
+		this.reference = reference;
+	}
 }
