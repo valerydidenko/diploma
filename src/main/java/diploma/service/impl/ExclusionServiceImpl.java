@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExclusionServiceImpl extends CrudServiceImpl<Exclusion> implements ExclusionService {
 
-    @Autowired
-    private ExclusionRepository repository;
+	@Autowired
+	private ExclusionRepository repository;
 
 }

@@ -234,9 +234,9 @@
                                  referencedTableName="positions" referencedColumnNames="id"
                                  onDelete="RESTRICT" onUpdate="CASCADE"/>
     </changeSet>
-    <changeSet id="create_table_references" author="vdidenko">
-        <createTable tableName="references">
-            <column name="id" type="bigint">
+    <changeSet id="create_table_reference" author="vdidenko">
+        <createTable tableName="reference">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="number" type="bigint">
@@ -245,11 +245,14 @@
             <column name="sign_date" type="date">
                 <constraints nullable="false"/>
             </column>
-            <column name="order" type="varchar(60)">
+            <column name="order_from" type="varchar(60)">
                 <constraints nullable="false"/>
             </column>
             <column name="order_date" type="date">
                 <constraints nullable="false"/>
+            </column>
+            <column name="student_id" type="bigint">
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="specialty_id" type="bigint">
                 <constraints nullable="false"/>
@@ -264,40 +267,37 @@
     </changeSet>
     <changeSet id="add_fk_references_table" author="vdidenko">
         <addForeignKeyConstraint constraintName="fk_references_students"
-                                 baseTableName="references" baseColumnNames="id"
+                                 baseTableName="reference" baseColumnNames="student_id"
                                  referencedTableName="students" referencedColumnNames="id"
                                  onDelete="RESTRICT" onUpdate="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_references_specialties"
-                                 baseTableName="references" baseColumnNames="specialty_id"
+                                 baseTableName="reference" baseColumnNames="specialty_id"
                                  referencedTableName="specialties" referencedColumnNames="id"
                                  onDelete="RESTRICT" onUpdate="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_references_exclusions"
-                                 baseTableName="references" baseColumnNames="exclusion_id"
+                                 baseTableName="reference" baseColumnNames="exclusion_id"
                                  referencedTableName="exclusions" referencedColumnNames="id"
                                  onDelete="RESTRICT" onUpdate="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_references_users"
-                                 baseTableName="references" baseColumnNames="user_id"
+                                 baseTableName="reference" baseColumnNames="user_id"
                                  referencedTableName="users" referencedColumnNames="id"
                                  onDelete="RESTRICT" onUpdate="CASCADE"/>
     </changeSet>
     <changeSet id="create_table_for_many2many_signs_references" author="vdidenko">
         <createTable tableName="signs_references">
-            <column name="sign_id" type="bigint">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="reference_id" type="bigint">
-                <constraints primaryKey="true"/>
-            </column>
+            <column name="sign_id" type="bigint"/>
+            <column name="reference_id" type="bigint"/>
         </createTable>
     </changeSet>
-    <changeSet id="add_fk_signs_references_table" author="vdidenko">
+    <changeSet id="add_constraints_signs_references_table" author="vdidenko">
+        <addPrimaryKey tableName="signs_references" columnNames="sign_id, reference_id"/>
         <addForeignKeyConstraint constraintName="fk_signs_references_signs"
                                  baseTableName="signs_references" baseColumnNames="sign_id"
                                  referencedTableName="signs" referencedColumnNames="id"
                                  onDelete="RESTRICT" onUpdate="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_signs_references_references"
                                  baseTableName="signs_references" baseColumnNames="reference_id"
-                                 referencedTableName="references" referencedColumnNames="id"
+                                 referencedTableName="reference" referencedColumnNames="id"
                                  onDelete="RESTRICT" onUpdate="CASCADE"/>
     </changeSet>
     <changeSet id="insert_test_data" author="vdidenko">

@@ -12,12 +12,12 @@ import java.util.List;
 @Service
 public class SubjectServiceImpl extends CrudServiceImpl<Subject> implements SubjectService {
 
-    @Autowired
-    private SubjectRepository repository;
+	@Autowired
+	private SubjectRepository repository;
 
-    @Override
-    public List<Subject> getAllBySpecialty(Specialty specialty) {
-        return repository.findAllBySpecialty(specialty);
-    }
+	@Override
+	public List<Subject> getAllBySpecialty(Specialty specialty) {
+		return repository.findAllBySpecialty(specialty);
+	}
 
 }

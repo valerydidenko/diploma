@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface SubjectRepository extends BaseRepository<Subject> {
 
-    List<Subject> findAllBySpecialty(Specialty specialty);
+	List<Subject> findAllBySpecialty(Specialty specialty);
 
 }

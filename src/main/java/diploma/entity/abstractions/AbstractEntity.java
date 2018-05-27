@@ -9,19 +9,19 @@ import java.io.Serializable;
 @MappedSuperclass
 public abstract class AbstractEntity implements Serializable {
 
-    protected Long id;
+	protected Long id;
 
-    public AbstractEntity() {
-    }
+	public AbstractEntity() {
+	}
 
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
-    public Long getId() {
-        return id;
-    }
+	@Id
+	@GeneratedValue
+	@Column(name = "id")
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

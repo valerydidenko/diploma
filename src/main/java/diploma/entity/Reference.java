@@ -1,16 +1,18 @@
 package diploma.entity;
 
 import diploma.entity.abstractions.AbstractEntity;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
-@Table(name = "references")
+@Table(name = "reference")
 public class Reference extends AbstractEntity {
 
 	private long number;
@@ -21,20 +23,10 @@ public class Reference extends AbstractEntity {
 	private Specialty specialty;
 	private Exclusion exclusion;
 	private User user;
+	private Set<Sign> signs;
 
 	public Reference() {
-	}
-
-	public Reference(long number, Date signDate, String order, Date orderDate,
-	                 Student student, Specialty specialty, Exclusion exclusion, User user) {
-		this.number = number;
-		this.signDate = signDate;
-		this.order = order;
-		this.orderDate = orderDate;
-		this.student = student;
-		this.specialty = specialty;
-		this.exclusion = exclusion;
-		this.user = user;
+		this.signs = new HashSet<>();
 	}
 
 	@Override
@@ -42,17 +34,12 @@ public class Reference extends AbstractEntity {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Reference reference = (Reference) o;
-		return number == reference.number &&
-				Objects.equals(signDate, reference.signDate) &&
-				Objects.equals(order, reference.order) &&
-				Objects.equals(orderDate, reference.orderDate) &&
-				Objects.equals(student, reference.student) &&
-				Objects.equals(specialty, reference.specialty);
+		return Objects.equals(student, reference.student);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(number, signDate, order, orderDate, student, specialty);
+		return Objects.hash(student);
 	}
 
 	@Override
@@ -63,26 +50,15 @@ public class Reference extends AbstractEntity {
 				", signDate=" + signDate +
 				", order='" + order + '\'' +
 				", orderDate=" + orderDate +
-				", student=" + student +
-				", specialty=" + specialty +
-				", exclusion=" + exclusion +
-				", user=" + user +
+				", student=" + student.getId() +
+				", specialty=" + specialty.getId() +
+				", exclusion=" + exclusion.getId() +
+				", user=" + user.getId() +
+				", signs[size]=" + signs.size() +
 				'}';
 	}
 
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(generator = "gen")
-	@GenericGenerator(name = "gen", strategy = "foreign", parameters = @Parameter(name = "property", value = "student"))
-	public Long getId() {
-		return super.getId();
-	}
-
-	public void setId(Long id) {
-		super.setId(id);
-	}
-
-	@Column(name = "number", nullable = false)
+	@Column(name = "number", nullable = false, unique = true)
 	public long getNumber() {
 		return number;
 	}
@@ -100,7 +76,7 @@ public class Reference extends AbstractEntity {
 		this.signDate = signDate;
 	}
 
-	@Column(name = "order", nullable = false, length = 60)
+	@Column(name = "order_from", nullable = false, length = 60)
 	@NotEmpty
 	public String getOrder() {
 		return order;
@@ -120,7 +96,7 @@ public class Reference extends AbstractEntity {
 	}
 
 	@OneToOne(optional = false)
-	@PrimaryKeyJoinColumn
+	@JoinColumn(name = "student_id", unique = true)
 	public Student getStudent() {
 		return student;
 	}
@@ -158,4 +134,18 @@ public class Reference extends AbstractEntity {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	@ManyToMany
+	@Cascade({CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(name = "signs_references",
+			joinColumns = @JoinColumn(name = "reference_id"),
+			inverseJoinColumns = @JoinColumn(name = "sign_id"))
+	public Set<Sign> getSigns() {
+		return signs;
+	}
+
+	public void setSigns(Set<Sign> signs) {
+		this.signs = signs;
+	}
+
 }

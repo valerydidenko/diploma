@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SignServiceImpl extends CrudServiceImpl<Sign> implements SignService {
 
-    @Autowired
-    private SignRepository repository;
+	@Autowired
+	private SignRepository repository;
 
 }

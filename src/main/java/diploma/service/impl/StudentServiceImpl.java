@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class StudentServiceImpl extends CrudServiceImpl<Student> implements StudentService {
 
-    @Autowired
-    private StudentRepository repository;
+	@Autowired
+	private StudentRepository repository;
 
 }

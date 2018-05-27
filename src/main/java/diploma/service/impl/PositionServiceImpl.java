@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PositionServiceImpl extends CrudServiceImpl<Position> implements PositionService {
 
-    @Autowired
-    private PositionRepository repository;
+	@Autowired
+	private PositionRepository repository;
 
 }

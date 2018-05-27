@@ -7,44 +7,44 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static diploma.utils.EntitiesFactory.generateExclusion;
+import static diploma.factories.EntitiesFactory.generateExclusion;
 import static org.junit.Assert.assertNull;
 
 public class TestExclusionService extends AbstractServiceTest {
 
-    @Autowired
-    private ExclusionService exclusionService;
+	@Autowired
+	private ExclusionService exclusionService;
 
-    private Exclusion exclusion;
+	private Exclusion exclusion;
 
-    @Before
-    public void initEntities() {
-        exclusion = generateExclusion();
+	@Before
+	public void initEntities() {
+		exclusion = generateExclusion();
 
-        log.info("GENERATE EXCLUSION - {}", exclusion);
+		log.info("GENERATE EXCLUSION - {}", exclusion);
 
-        exclusionRepository.save(exclusion);
+		exclusionRepository.save(exclusion);
 
-        log.info("EXCLUSION WAS SAVED - {}", exclusion);
-    }
+		log.info("EXCLUSION WAS SAVED - {}", exclusion);
+	}
 
-    @Test
-    public void testUpdateEntity() {
-        entityManager.detach(exclusion);
+	@Test
+	public void testUpdateEntity() {
+		entityManager.detach(exclusion);
 
-        exclusion.setUkrReason("Обновленная причина");
-        exclusion.setEngReason("Updated reason");
-        exclusionService.save(exclusion);
+		exclusion.setUkrReason("Обновленная причина");
+		exclusion.setEngReason("Updated reason");
+		exclusionService.save(exclusion);
 
-        Exclusion updated = exclusionRepository.findOne(exclusion.getId());
-        Assert.assertNotNull(updated);
-        Assert.assertEquals(exclusion, updated);
-    }
+		Exclusion updated = exclusionRepository.findOne(exclusion.getId());
+		Assert.assertNotNull(updated);
+		Assert.assertEquals(exclusion, updated);
+	}
 
-    @Test
-    public void testDeleteEntity() {
-        exclusionService.delete(exclusion);
-        assertNull(exclusionRepository.findOne(exclusion.getId()));
-    }
+	@Test
+	public void testDeleteEntity() {
+		exclusionService.delete(exclusion);
+		assertNull(exclusionRepository.findOne(exclusion.getId()));
+	}
 
 }

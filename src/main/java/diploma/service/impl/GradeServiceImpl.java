@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GradeServiceImpl extends CrudServiceImpl<Grade> implements GradeService {
 
-    @Autowired
-    private GradeRepository repository;
+	@Autowired
+	private GradeRepository repository;
 
 }

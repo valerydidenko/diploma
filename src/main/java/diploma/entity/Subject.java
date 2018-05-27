@@ -14,119 +14,109 @@ import java.util.Objects;
 @Table(name = "subjects")
 public class Subject extends AbstractEntity {
 
-    private static final long serialVersionUID = -1479667432527336018L;
+	private static final long serialVersionUID = -1479667432527336018L;
 
-    private int semester;
-    private String ukrName;
-    private String engName;
-    private String code;
-    private float credit;
-    private Specialty specialty;
+	private int semester;
+	private String ukrName;
+	private String engName;
+	private String code;
+	private float credit;
+	private Specialty specialty;
 
-    public Subject() {
-    }
+	public Subject() {
+	}
 
-    public Subject(int semester, String ukrName, String engName,
-                   String code, float credit, Specialty specialty) {
-        this.semester = semester;
-        this.ukrName = ukrName;
-        this.engName = engName;
-        this.code = code;
-        this.credit = credit;
-        this.specialty = specialty;
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Subject subject = (Subject) o;
+		return semester == subject.semester &&
+				Float.compare(subject.credit, credit) == 0 &&
+				Objects.equals(ukrName, subject.ukrName) &&
+				Objects.equals(engName, subject.engName) &&
+				Objects.equals(code, subject.code) &&
+				Objects.equals(specialty, subject.specialty);
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Subject subject = (Subject) o;
-        return semester == subject.semester &&
-                Float.compare(subject.credit, credit) == 0 &&
-                Objects.equals(ukrName, subject.ukrName) &&
-                Objects.equals(engName, subject.engName) &&
-                Objects.equals(code, subject.code) &&
-                Objects.equals(specialty, subject.specialty);
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(semester, ukrName, engName, code, credit, specialty);
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(semester, ukrName, engName, code, credit, specialty);
-    }
+	@Override
+	public String toString() {
+		return "Subject{" +
+				"id=" + id +
+				", semester=" + semester +
+				", ukrName='" + ukrName + '\'' +
+				", engName='" + engName + '\'' +
+				", code='" + code + '\'' +
+				", credit=" + credit +
+				", specialtyId=" + specialty.getId() +
+				'}';
+	}
 
-    @Override
-    public String toString() {
-        return "Subject{" +
-                "id=" + id +
-                ", semester=" + semester +
-                ", ukrName='" + ukrName + '\'' +
-                ", engName='" + engName + '\'' +
-                ", code='" + code + '\'' +
-                ", credit=" + credit +
-                ", specialtyId=" + specialty.getId() +
-                '}';
-    }
+	@Column(nullable = false)
+	@Min(1)
+	@Max(6)
+	public int getSemester() {
+		return semester;
+	}
 
-    @Column(nullable = false)
-    @Min(1)
-    @Max(6)
-    public int getSemester() {
-        return semester;
-    }
+	public void setSemester(int semester) {
+		this.semester = semester;
+	}
 
-    public void setSemester(int semester) {
-        this.semester = semester;
-    }
+	@Column(name = "ukr_name", nullable = false, length = 150)
+	@NotEmpty
+	public String getUkrName() {
+		return ukrName;
+	}
 
-    @Column(name = "ukr_name", nullable = false, length = 150)
-    @NotEmpty
-    public String getUkrName() {
-        return ukrName;
-    }
+	public void setUkrName(String ukrName) {
+		this.ukrName = ukrName;
+	}
 
-    public void setUkrName(String ukrName) {
-        this.ukrName = ukrName;
-    }
+	@Column(name = "eng_name", nullable = false, length = 150)
+	@NotEmpty
+	public String getEngName() {
+		return engName;
+	}
 
-    @Column(name = "eng_name", nullable = false, length = 150)
-    @NotEmpty
-    public String getEngName() {
-        return engName;
-    }
+	public void setEngName(String engName) {
+		this.engName = engName;
+	}
 
-    public void setEngName(String engName) {
-        this.engName = engName;
-    }
+	@Column(nullable = false, length = 60)
+	@NotEmpty
+	public String getCode() {
+		return code;
+	}
 
-    @Column(nullable = false, length = 60)
-    @NotEmpty
-    public String getCode() {
-        return code;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	@Column(nullable = false)
+	@Min(0)
+	@Max(10)
+	public float getCredit() {
+		return credit;
+	}
 
-    @Column(nullable = false)
-    @Min(0)
-    @Max(10)
-    public float getCredit() {
-        return credit;
-    }
+	public void setCredit(float credit) {
+		this.credit = credit;
+	}
 
-    public void setCredit(float credit) {
-        this.credit = credit;
-    }
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "specialty_id")
+	@Cascade({CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
+	public Specialty getSpecialty() {
+		return specialty;
+	}
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "specialty_id")
-    @Cascade({CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
-    public Specialty getSpecialty() {
-        return specialty;
-    }
-
-    public void setSpecialty(Specialty specialty) {
-        this.specialty = specialty;
-    }
+	public void setSpecialty(Specialty specialty) {
+		this.specialty = specialty;
+	}
 }

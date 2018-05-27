@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SpecialtyServiceImpl extends CrudServiceImpl<Specialty> implements SpecialtyService {
 
-    @Autowired
-    private SpecialtyRepository repository;
+	@Autowired
+	private SpecialtyRepository repository;
 
 }

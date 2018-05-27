@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface SubjectService extends CrudService<Subject> {
 
-    List<Subject> getAllBySpecialty(Specialty specialty);
+	List<Subject> getAllBySpecialty(Specialty specialty);
 
 }
