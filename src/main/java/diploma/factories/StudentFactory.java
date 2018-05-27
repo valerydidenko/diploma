@@ -1,6 +1,6 @@
 package diploma.factories;
 
-import diploma.entity.Student;
+import diploma.entities.Student;
 import diploma.enums.DegreeEnum;
 
 import java.util.Date;

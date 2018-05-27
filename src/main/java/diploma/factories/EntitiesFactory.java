@@ -1,6 +1,6 @@
 package diploma.factories;
 
-import diploma.entity.*;
+import diploma.entities.*;
 import diploma.enums.PositionEnum;
 import diploma.enums.PositionTypeEnum;
 

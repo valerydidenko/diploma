@@ -1,6 +1,6 @@
 package diploma.factories;
 
-import diploma.entity.User;
+import diploma.entities.User;
 import diploma.enums.RoleEnum;
 
 public final class UserFactory {
